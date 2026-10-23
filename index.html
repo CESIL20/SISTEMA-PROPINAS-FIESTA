@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b2e29">
+<title>Propinas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#f6f2ea;--card:#fffdf9;--tx:#1b1913;--mu:#7b7566;--bd:#e9e2d2;--gold:#a9822f;--gold2:#d6bb78;--gt:#1b1405;--emd:#0b2e29;--em2:#14534a;--ok:#e4f2ea;--okt:#1d6b44;--late:#fbf0d6;--latet:#8a5a0b;--perm:#f9e1e0;--permt:#a63a35;--hoy:#f6efdc;--hov:#faf6ec;--sh:0 1px 0 rgba(255,255,255,.7) inset,0 1px 2px rgba(60,45,10,.06),0 10px 30px -12px rgba(60,45,10,.18);--serif:"Playfair Display",Georgia,"Times New Roman",serif;--sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0d0c;--card:#121716;--tx:#f2eee4;--mu:#9a9585;--bd:#232a27;--gold:#d8b45c;--gold2:#f0d898;--gt:#1a1405;--emd:#071a17;--em2:#0f3d36;--ok:#12291d;--okt:#7fdba5;--late:#2c2410;--latet:#f0c866;--perm:#2e1615;--permt:#f09a94;--hoy:#1c1b12;--hov:#161c1a;--sh:0 1px 0 rgba(255,255,255,.04) inset,0 10px 30px -12px rgba(0,0,0,.6)}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:14.5px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+.top{position:relative;overflow:hidden;background:radial-gradient(900px 300px at 85% -40%,rgba(214,187,120,.28),transparent 60%),linear-gradient(135deg,var(--emd),var(--em2));color:#f4efe2;padding:22px clamp(16px,4vw,36px) 74px;border-bottom:1px solid var(--gold)}
+.top .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:600 22px var(--serif);color:var(--gt);background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 0 3px rgba(214,187,120,.25);flex:none}
+.top h1{margin:0;font:600 clamp(20px,3.2vw,28px)/1.15 var(--serif);letter-spacing:.01em}
+.top p{margin:3px 0 0;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);opacity:.9}
+.rb{margin-left:auto;text-align:right}
+.role{display:inline-block;border:1px solid var(--gold2);color:var(--gold2);border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;letter-spacing:.06em;background:rgba(0,0,0,.18)}
+.rb small{display:block;margin-top:4px;font-size:11px;color:#cfc8b4;letter-spacing:.06em}
+.wrap{max-width:1180px;margin:-50px auto 0;padding:0 clamp(12px,3vw,32px) 36px;position:relative}
+.grid{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);grid-template-areas:"kpi" "ppl" "tabla" "res" "acc"}
+@media (min-width:960px){.grid{grid-template-columns:350px minmax(0,1fr);grid-template-areas:"kpi kpi" "ppl tabla" "acc tabla" "res tabla";align-items:start}}
+.kpis{grid-area:kpi;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px 16px;box-shadow:var(--sh)}
+.kpi span{display:block;color:var(--mu);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.14em}
+.kpi b{display:block;font:600 clamp(19px,3.6vw,30px)/1.2 var(--serif);margin-top:6px;white-space:nowrap}
+.kpi.main{background:linear-gradient(145deg,var(--emd),var(--em2));border-color:var(--gold);color:#f4efe2}
+.kpi.main span{color:var(--gold2)}.kpi.main b{color:var(--gold2)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;box-shadow:var(--sh);min-width:0}
+.a-ppl{grid-area:ppl}.a-tabla{grid-area:tabla}.a-res{grid-area:res}.a-acc{grid-area:acc}
+h2{display:flex;align-items:center;gap:10px;font:600 11px var(--sans);margin:0 0 14px;text-transform:uppercase;letter-spacing:.18em;color:var(--mu)}
+h2:before{content:"";width:18px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px}
+.row{display:flex;gap:8px;align-items:center}
+input{font:inherit;font-size:16px;color:var(--tx);background:transparent;border:1px solid var(--bd);border-radius:12px;padding:11px 13px;min-width:0;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,76,.2)}
+input::placeholder{color:var(--mu);opacity:.6}
+button{font:inherit;font-weight:600;letter-spacing:.02em;border:0;border-radius:12px;padding:11px 18px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--gt);cursor:pointer;min-height:44px;box-shadow:0 4px 14px -6px rgba(169,130,47,.7);transition:transform .15s,filter .2s}
+button:hover{filter:brightness(1.06)}button:active{transform:translateY(1px)}
+button.g{background:transparent;color:var(--tx);border:1px solid var(--bd);box-shadow:none;min-width:46px}
+button.g:hover{border-color:var(--gold);color:var(--gold)}
+button.d{color:var(--permt);border-color:var(--permt);background:transparent}
+button.d:hover{background:var(--perm);color:var(--permt);border-color:var(--permt)}
+button:disabled{opacity:.3;cursor:default;filter:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.row+.chips{margin-top:14px}.ro .chips{margin-top:0}
+.chip{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--bd);border-radius:99px;padding:4px 12px 4px 4px;font-weight:500;background:var(--hov)}
+.chip b{cursor:pointer;color:var(--mu);width:22px;height:22px;display:grid;place-items:center;border-radius:50%;font-size:11px;margin-right:-6px}
+.chip b:hover{background:var(--bd);color:var(--tx)}
+.av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--em2),var(--emd));color:var(--gold2);display:inline-grid;place-items:center;font-size:11px;font-weight:700;letter-spacing:.04em;flex:none;box-shadow:0 0 0 1.5px var(--gold)}
+.empty{color:var(--mu);font-size:13px;margin:12px 0 0}
+.lb{display:block;color:var(--mu);font-size:12px;margin:0 0 6px}
+.hint{color:var(--mu);font-size:12.5px;margin:8px 0 0}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.acts button{flex:1 1 auto}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.nav div{text-align:center;flex:1}.nav strong{font:600 clamp(19px,2.8vw,24px)/1.2 var(--serif);display:block}.nav small{color:var(--gold);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;font-size:12px;color:var(--mu)}
+.pill{padding:3px 11px;border-radius:99px;font-weight:600;font-size:12px}
+.l0,.PO{background:var(--ok);color:var(--okt)}.lT,.PT{background:var(--late);color:var(--latet)}.lP,.PP{background:var(--perm);color:var(--permt)}
+.sc{overflow:auto;max-height:72vh;border:1px solid var(--bd);border-radius:14px;-webkit-overflow-scrolling:touch}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+th,td{padding:9px 12px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--bd)}
+tr:first-child th{position:sticky;top:0;background:var(--card);z-index:2;font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--mu);font-weight:600}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card);z-index:1;border-right:1px solid var(--bd)}
+tr:first-child th:first-child{z-index:3}
+tr:last-child td{border-bottom:0}
+tr:hover>td{background:var(--hov)}
+tr.hoy td{background:var(--hoy)}tr.hoy td:first-child{font-weight:700;color:var(--gold)}
+td.s{cursor:pointer;user-select:none;min-width:58px}
+.ro td.s{cursor:default}.ro td.s:active .st{transform:none}
+.st{display:inline-grid;place-items:center;min-width:38px;height:30px;border-radius:9px;font-weight:700;font-size:13px;transition:transform .12s}
+td.s:active .st{transform:scale(.92)}
+td input{width:96px;text-align:right;padding:7px 10px;font-family:var(--serif);font-weight:600}
+td input[readonly]{border-color:transparent;background:transparent;box-shadow:none;cursor:default}
+.who{display:flex;gap:10px;align-items:center}
+.who .t{font-weight:600}
+.amt{font:600 16px var(--serif);color:var(--gold)}
+.warn{color:var(--permt);font-size:13px;margin:12px 0 0}
+.foot{text-align:center;color:var(--mu);font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-top:22px}
+.ro .ed{display:none!important}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--emd);color:var(--gold2);border:1px solid var(--gold);padding:10px 18px;border-radius:99px;font-weight:600;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:radial-gradient(900px 400px at 80% -10%,rgba(214,187,120,.25),transparent 60%),linear-gradient(135deg,var(--emd),var(--em2))}
+.gate[hidden]{display:none}
+.gbox{width:100%;max-width:400px;background:var(--card);border:1px solid var(--gold);border-radius:22px;padding:28px 24px;text-align:center;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.gbox .logo{margin:0 auto 14px;width:56px;height:56px;font-size:28px}
+.gbox h1{font:600 24px/1.2 var(--serif);margin:0 0 8px}
+.gbox p{color:var(--mu);margin:0 0 6px}
+.gbox .roles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 6px;text-align:left;font-size:12.5px}
+.gbox .roles div{border:1px solid var(--bd);border-radius:12px;padding:10px;background:var(--hov)}
+.gbox .roles b{display:block;color:var(--gold);margin-bottom:2px}
+.gbox button{margin-top:14px;width:100%}
+[hidden]{display:none!important}
+.gbox input{width:100%;margin-top:10px;text-align:center}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.seg button{margin:0;width:auto}
+.seg button.g.on{background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--gt);border-color:transparent}
+.err{color:var(--permt);font-size:13px;min-height:18px;margin:8px 0 0}
+.out{min-height:34px;padding:6px 14px;font-size:12px;margin-top:8px;color:#f4efe2;border-color:rgba(214,187,120,.5)}
+.spin{width:22px;height:22px;border:3px solid var(--bd);border-top-color:var(--gold);border-radius:50%;margin:12px auto 0;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kpis,.card{animation:up .5s ease both}.a-tabla{animation-delay:.08s}.a-res{animation-delay:.14s}
+@media (prefers-reduced-motion:reduce){.kpis,.card{animation:none}.toast{transition:none}.spin{animation-duration:2s}}
+@media (max-width:520px){.kpi{padding:12px}.card{padding:14px;border-radius:16px}.kpi span{letter-spacing:.08em}.rb{margin-left:0;text-align:left;width:100%}}
+</style>
+</head>
+<body class="ro">
+
+<div class="gate" id="gate">
+  <div class="gbox">
+    <div class="logo">P</div>
+    <h1>Propinas por quincena</h1>
+    <p id="gmsg">Verificando acceso…</p>
+    <div class="spin" id="gspin"></div>
+    <div id="gLogin" hidden>
+      <div class="seg"><button class="g on" data-r="u" type="button">👁 Usuario</button><button class="g" data-r="m" type="button">👑 Máster</button></div>
+      <input type="password" id="gpw" placeholder="Clave" autocomplete="current-password">
+      <p class="err" id="gerr"></p>
+      <button id="gin">Entrar</button>
+      <p class="hint">Usuario: solo ve. Máster: puede editar todo.</p>
+    </div>
+    <div id="gSetup" hidden>
+      <input type="password" id="xm" placeholder="Clave del máster (editar)" autocomplete="new-password">
+      <input type="password" id="xu" placeholder="Clave de usuarios (solo ver)" autocomplete="new-password">
+      <p class="err" id="gerr2"></p>
+      <button id="gset">Guardar y entrar</button>
+      <p class="hint">Mínimo 4 caracteres. Comparte la clave de usuarios con tu equipo.</p>
+    </div>
+    <div id="gNone" hidden><p class="hint">Pídele al máster que configure las claves y vuelve a abrir el enlace.</p></div>
+    <div id="gOff" hidden>
+      <p>Abre este enlace con tu cuenta de Claude para entrar.</p>
+      <button class="g" id="gloc">Usar solo en este dispositivo</button>
+      <p class="hint">En este modo los datos no se comparten con nadie.</p>
+    </div>
+  </div>
+</div>
+
+<header class="top"><div class="in">
+  <div class="logo">P</div>
+  <div><h1>Propinas por quincena</h1><p>Martes a domingo · cierre cada 15 días</p></div>
+  <div class="rb"><span class="role" id="role">…</span><small id="sync"></small><button class="g out" id="out" hidden>Salir</button></div>
+</div></header>
+
+<div class="wrap"><div class="grid">
+
+  <div class="kpis">
+    <div class="kpi main"><span>Pozo</span><b id="pozo">S/ 0.00</b></div>
+    <div class="kpi"><span>Días con propina</span><b id="nd">0</b></div>
+    <div class="kpi"><span>Personal</span><b id="cnt">0</b></div>
+  </div>
+
+  <section class="card a-ppl">
+    <h2>Personal</h2>
+    <div class="row ed"><input id="nm" placeholder="Nombre" style="flex:1" autocomplete="off"><button id="add">Agregar</button></div>
+    <div class="chips" id="ppl"></div>
+  </section>
+
+  <section class="card a-acc ed">
+    <h2>Fechas y datos</h2>
+    <label class="lb" for="fi">Inicio de esta quincena</label>
+    <div class="row"><input type="date" id="fi" style="flex:1"><button id="fa">Aplicar</button></div>
+    <p class="hint">Mueve todas las fechas guardadas (propinas y asistencia) al nuevo inicio.</p>
+    <div class="acts">
+      <button id="sv">Guardar</button>
+      <button class="g d" id="cl">Vaciar quincena</button>
+      <button class="g d" id="rs">Resetear todo</button>
+    </div>
+    <p class="hint">Guardar confirma los datos (también se guardan solos). Vaciar borra propinas y asistencia de esta quincena y empieza de cero, y conserva al personal. Resetear borra todo: personal, quincenas y fechas.</p>
+    <label class="lb" style="margin-top:16px">Claves de acceso (deja vacío lo que no cambies)</label>
+    <div class="row"><input type="password" id="cm" placeholder="Nueva clave máster" style="flex:1" autocomplete="new-password"></div>
+    <div class="row" style="margin-top:8px"><input type="password" id="cu" placeholder="Nueva clave usuarios" style="flex:1" autocomplete="new-password"><button id="ck">Cambiar</button></div>
+  </section>
+
+  <section class="card a-tabla">
+    <h2>Asistencia y propinas</h2>
+    <div class="nav">
+      <button class="g" id="prev" aria-label="Quincena anterior">◀</button>
+      <div><strong id="rng"></strong><small id="tag"></small></div>
+      <button class="g" id="next" aria-label="Quincena siguiente">▶</button>
+    </div>
+    <div class="legend"><span class="pill l0">✔ Presente</span><span class="pill lT">⏰ Tarde</span><span class="pill lP">📝 Permiso</span><span class="ed">Toca una celda para cambiar. Tarde y permiso no reciben ese día.</span></div>
+    <div class="sc"><table id="tb"></table></div>
+  </section>
+
+  <section class="card a-res">
+    <h2>Resumen del reparto</h2>
+    <div class="sc"><table id="sm"></table></div>
+    <p class="empty" id="emp">Aún no hay personal registrado.</p>
+    <p class="warn" id="warn"></p>
+  </section>
+
+</div>
+<div class="foot" id="foot">Reparto automático</div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+var KEY="propinas_v1",DOC="propinas/estado";
+var MODE="pending",EDIT=false,dbRef=null,lastSaved="",timer=null,writing=false,dirty=false,wantToast=false,seeded=false;
+var V=0,prevPozo=0,tt;
+function pad(n){return String(n).padStart(2,"0")}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function parse(s){var a=s.split("-");return new Date(+a[0],+a[1]-1,+a[2])}
+function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
+function todayD(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
+function norm(s){
+  s=s||{};
+  if(!s.people)s.people=[];
+  if(!s.periods)s.periods={};
+  if(!s.anchor)s.anchor=s.start||iso(todayD());
+  if(s.start&&(s.tips||s.att)){s.periods[s.start]={tips:s.tips||{},att:s.att||{}};delete s.start;delete s.tips;delete s.att}
+  return s;
+}
+function loadLocal(){var s=null;try{var r=localStorage.getItem(KEY);if(r)s=JSON.parse(r)}catch(e){}return s?norm(s):null}
+var S=loadLocal()||norm({});
+
+// Guardado: en modo sincronizado escribe en la base compartida (solo el máster); en modo local usa el dispositivo
+function save(){
+  if(MODE==="sync"){if(EDIT)commit();return true}
+  try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}
+}
+function setSync(t){document.getElementById("sync").textContent=t}
+function commit(flush){dirty=true;setSync("Guardando…");clearTimeout(timer);timer=setTimeout(doWrite,flush?0:600)}
+function doWrite(){
+  timer=null;
+  if(writing){timer=setTimeout(doWrite,300);return}
+  writing=true;dirty=false;
+  var j=JSON.stringify(S);
+  dbRef.set({json:j,at:Date.now()}).then(function(){
+    lastSaved=j;setSync("☁ Sincronizado ✓");if(wantToast){wantToast=false;toast("Guardado ✓")}
+  }).catch(function(e){
+    dirty=true;setSync("Error al guardar");wantToast=false;
+    toast(e&&e.code==="invalid_argument"?"No tienes permiso para editar":"No se pudo guardar");
+  }).then(function(){writing=false});
+}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},2200)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function ini(n){var p=n.trim().split(/\s+/);return esc((p[0][0]+(p[1]?p[1][0]:"")).toUpperCase())}
+var DN=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+
+// Quincena automática: se calcula desde la fecha ancla y la fecha de hoy
+function curIdx(){return Math.floor(Math.round((todayD()-parse(S.anchor))/864e5)/15)}
+function pStart(){return addDays(parse(S.anchor),15*(curIdx()+V))}
+function P(){var k=iso(pStart());if(!S.periods[k])S.periods[k]={tips:{},att:{}};return S.periods[k]}
+function days(){var out=[],s=pStart(),t=iso(todayD());for(var i=0;i<15;i++){var x=addDays(s,i);if(x.getDay()!==1)out.push({k:iso(x),l:DN[x.getDay()]+" "+x.getDate()+"/"+(x.getMonth()+1),hoy:iso(x)===t})}return out}
+function st(k,id){return(P().att[k]||{})[id]||""}
+function money(n){return"S/ "+n.toFixed(2)}
+function countTo(v){
+  var el=document.getElementById("pozo"),a=prevPozo,t0=performance.now();prevPozo=v;
+  if(a===v||matchMedia("(prefers-reduced-motion:reduce)").matches){el.textContent=money(v);return}
+  (function f(n){var p=Math.min(1,(n-t0)/350);el.textContent=money(a+(v-a)*p);if(p<1)requestAnimationFrame(f)})(t0);
+}
+
+function renderHead(){
+  var s=pStart(),e=addDays(s,14);
+  document.getElementById("rng").textContent=s.getDate()+"/"+(s.getMonth()+1)+" – "+e.getDate()+"/"+(e.getMonth()+1);
+  document.getElementById("tag").textContent=V===0?"Quincena actual":V<0?"Quincena anterior (hace "+(-V)+")":"Quincena futura";
+  document.getElementById("next").disabled=V>=0;
+  document.getElementById("fi").value=iso(s);
+}
+function renderPeople(){
+  document.getElementById("cnt").textContent=S.people.length;
+  document.getElementById("ppl").innerHTML=S.people.map(function(p){return'<span class="chip"><span class="av">'+ini(p.name)+'</span>'+esc(p.name)+(EDIT?'<b data-del="'+p.id+'" title="Quitar">✕</b>':"")+"</span>"}).join("");
+}
+function renderTable(){
+  var D=days(),tips=P().tips,ro=EDIT?"":" readonly tabindex=\"-1\"",h="<tr><th>Día</th><th>Propina</th>"+S.people.map(function(p){return"<th>"+esc(p.name)+"</th>"}).join("")+"</tr>";
+  D.forEach(function(d){
+    h+='<tr class="'+(d.hoy?"hoy":"")+'"><td>'+d.l+(d.hoy?" ●":"")+'</td><td><input type="number" inputmode="decimal" min="0" step="0.01" placeholder="'+(EDIT?"0.00":"—")+'" data-tip="'+d.k+'" value="'+(tips[d.k]||"")+'"'+ro+'></td>';
+    S.people.forEach(function(p){
+      var s=st(d.k,p.id),c=s==="T"?"PT":s==="P"?"PP":"PO",t=s==="T"?"⏰":s==="P"?"📝":"✔";
+      h+='<td class="s" data-k="'+d.k+'" data-id="'+p.id+'"><span class="st '+c+'">'+t+"</span></td>";
+    });
+    h+="</tr>";
+  });
+  document.getElementById("tb").innerHTML=h;
+}
+function renderSummary(){
+  var D=days(),tips=P().tips,tot={},lost={},pozo=0,nd=0,orphan=0;
+  S.people.forEach(function(p){tot[p.id]={amt:0,days:0};lost[p.id]=[]});
+  D.forEach(function(d){
+    var t=+tips[d.k]||0;if(t>0)nd++;pozo+=t;
+    var el=S.people.filter(function(p){return!st(d.k,p.id)});
+    S.people.forEach(function(p){var s=st(d.k,p.id);if(s)lost[p.id].push(d.l+(s==="T"?" ⏰":" 📝"))});
+    if(t>0){if(!el.length){orphan+=t;return}el.forEach(function(p){tot[p.id].amt+=t/el.length;tot[p.id].days++})}
+  });
+  countTo(pozo);
+  document.getElementById("nd").textContent=nd;
+  var h="<tr><th>Persona</th><th>Días</th><th>Recibe</th><th>Sin propina</th></tr>";
+  S.people.forEach(function(p){h+='<tr><td><div class="who"><span class="av">'+ini(p.name)+'</span><span class="t">'+esc(p.name)+'</span></div></td><td>'+tot[p.id].days+'</td><td><span class="amt">'+money(tot[p.id].amt)+"</span></td><td style='white-space:normal;text-align:left;min-width:130px'>"+(lost[p.id].join(", ")||"—")+"</td></tr>"});
+  document.getElementById("sm").innerHTML=S.people.length?h:"";
+  document.getElementById("emp").style.display=S.people.length?"none":"block";
+  document.getElementById("warn").textContent=orphan>0?"⚠ "+money(orphan)+" sin repartir (nadie elegible ese día).":"";
+}
+function renderAll(){renderHead();renderPeople();renderTable();renderSummary()}
+
+// Botón de doble toque para acciones destructivas
+function arm(id,fn){
+  var b=document.getElementById(id),orig=b.textContent,on=false,tm;
+  b.onclick=function(){
+    if(!EDIT)return;
+    if(!on){on=true;b.textContent="¿Seguro? Toca otra vez";tm=setTimeout(function(){on=false;b.textContent=orig},4000);return}
+    clearTimeout(tm);on=false;b.textContent=orig;fn();
+  };
+}
+
+document.getElementById("add").onclick=function(){
+  if(!EDIT)return;
+  var i=document.getElementById("nm"),n=i.value.trim();if(!n)return;
+  S.people.push({id:"p"+Date.now(),name:n});i.value="";save();renderAll();
+};
+document.getElementById("nm").onkeydown=function(e){if(e.key==="Enter")document.getElementById("add").click()};
+document.getElementById("prev").onclick=function(){V--;renderAll()};
+document.getElementById("next").onclick=function(){if(V<0){V++;renderAll()}};
+
+// Modificar fechas: mueve el ciclo y todos los datos guardados al nuevo inicio
+document.getElementById("fa").onclick=function(){
+  if(!EDIT)return;
+  var val=document.getElementById("fi").value;if(!val)return;
+  var n=Math.round((parse(val)-pStart())/864e5);
+  if(!n){toast("La fecha ya es esa");return}
+  function sk(k){return iso(addDays(parse(k),n))}
+  var np={};
+  Object.keys(S.periods).forEach(function(k){
+    var p=S.periods[k],t={},a={};
+    Object.keys(p.tips).forEach(function(d){t[sk(d)]=p.tips[d]});
+    Object.keys(p.att).forEach(function(d){a[sk(d)]=p.att[d]});
+    np[sk(k)]={tips:t,att:a};
+  });
+  S.periods=np;S.anchor=sk(S.anchor);
+  V=Math.round(Math.round((parse(val)-parse(S.anchor))/864e5)/15)-curIdx();
+  save();renderAll();toast("Fechas actualizadas");
+};
+document.getElementById("sv").onclick=function(){
+  if(!EDIT)return;
+  if(MODE==="sync"){wantToast=true;commit(true)}else toast(save()?"Guardado ✓":"No se pudo guardar en este navegador");
+};
+arm("cl",function(){delete S.periods[iso(pStart())];save();renderAll();toast("Quincena vaciada, empieza de cero")});
+arm("rs",function(){
+  S={anchor:iso(todayD()),people:[],periods:{}};V=0;prevPozo=0;
+  try{localStorage.removeItem(KEY)}catch(e){}
+  save();renderAll();toast("Todo reseteado");
+});
+
+document.getElementById("ppl").onclick=function(e){
+  if(!EDIT)return;
+  var id=e.target.getAttribute("data-del");if(!id)return;
+  S.people=S.people.filter(function(p){return p.id!==id});save();renderAll();
+};
+document.getElementById("tb").onclick=function(e){
+  if(!EDIT)return;
+  var c=e.target.closest("td.s");if(!c)return;
+  var k=c.dataset.k,id=c.dataset.id,cur=st(k,id),nx=cur===""?"T":cur==="T"?"P":"",pd=P();
+  pd.att[k]=pd.att[k]||{};if(nx)pd.att[k][id]=nx;else delete pd.att[k][id];
+  save();renderTable();renderSummary();
+};
+document.getElementById("tb").oninput=function(e){
+  if(!EDIT)return;
+  var k=e.target.getAttribute("data-tip");if(!k)return;
+  P().tips[k]=e.target.value;save();renderSummary();
+};
+// Si la app queda abierta y cambia el día/quincena, se actualiza sola
+var lastDay=iso(todayD());
+function tick(){var d=iso(todayD());if(d!==lastDay){lastDay=d;V=0;renderAll()}}
+setInterval(tick,60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)tick()});
+
+// ---------- Acceso por roles ----------
+function enter(mode,edit,label,foot){
+  MODE=mode;EDIT=edit;
+  document.body.classList.toggle("ro",!edit);
+  document.getElementById("role").textContent=label;
+  document.getElementById("foot").textContent=foot;
+  document.getElementById("gate").hidden=true;
+  document.getElementById("out").hidden=mode!=="sync";
+  renderAll();
+}
+function startLocal(){S=loadLocal()||norm({});enter("local",true,"💻 Modo local","Datos guardados solo en este dispositivo")}
+document.getElementById("gloc").onclick=startLocal;
+
+function startSync(role){
+  var master=role==="m",db=DBH;
+  S=norm({});dbRef=db.doc(DOC);
+  enter("sync",master,master?"👑 Máster":"👁 Usuario · solo lectura",master?"Los cambios se sincronizan con los usuarios":"Vista en tiempo real · solo lectura");
+  setSync(master?"☁ Conectado":"☁ En vivo");
+  dbRef.onSnapshot(function(snap){
+    var d=snap.exists?snap.data():null;
+    if(!d||!d.json){
+      if(snap.metadata&&snap.metadata.fromCache)return;
+      if(!seeded){
+        seeded=true;
+        var loc=master?loadLocal():null;
+        if(loc&&(loc.people.length||Object.keys(loc.periods).length)){S=loc;renderAll();commit(true);toast("Datos de este dispositivo subidos")}
+      }
+      return;
+    }
+    seeded=true;
+    if(d.json===lastSaved)return;
+    var f=document.activeElement,typing=f&&f.tagName==="INPUT";
+    if(master&&(writing||dirty||typing))return;
+    try{S=norm(JSON.parse(d.json))}catch(e){return}
+    lastSaved=d.json;renderAll();
+  },function(){setSync("Sin conexión")});
+}
+var SES="propinas_ses",ACCDOC="propinas/acceso",ACC=null,USER=null,DBH=null,ROLE_SEL="u";
+// Hash de las claves (SHA-256 con sal fija; respaldo simple si el navegador no tiene crypto.subtle)
+function sha(pw){
+  var s="propinas-v1|"+pw;
+  if(window.crypto&&crypto.subtle&&window.TextEncoder){
+    return crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,"0")}).join("")});
+  }
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;
+  return Promise.resolve("f"+(h>>>0).toString(16));
+}
+function isMaster(){try{return!!(USER.canEdit()||USER.isOwner())}catch(e){return false}}
+function show(id,msg){["gspin","gLogin","gSetup","gNone","gOff"].forEach(function(x){document.getElementById(x).hidden=x!==id});document.getElementById("gmsg").textContent=msg||""}
+function remember(r,h){try{sessionStorage.setItem(SES,JSON.stringify({r:r,h:h}))}catch(e){}}
+function afterAcc(){
+  if(!ACC||!ACC.m||!ACC.u){
+    if(isMaster())show("gSetup","Primera vez: crea las claves de acceso");
+    else show("gNone","Aún no hay claves de acceso");
+    return;
+  }
+  var ses=null;try{ses=JSON.parse(sessionStorage.getItem(SES))}catch(e){}
+  if(ses&&((ses.r==="m"&&ses.h===ACC.m&&isMaster())||(ses.r==="u"&&ses.h===ACC.u))){startSync(ses.r);return}
+  show("gLogin","Inicia sesión");
+}
+function noAccess(){show("gOff","Inicia sesión para continuar")}
+function boot(){
+  if(!window.claude||!window.claude.use){noAccess();return}
+  Promise.all([claude.use("db"),claude.use("user")]).then(function(r){
+    if(!r[0]||!r[1]){noAccess();return}
+    DBH=r[0];USER=r[1];
+    return DBH.doc(ACCDOC).get().then(function(s){ACC=s.exists?s.data():null;afterAcc()});
+  }).catch(noAccess);
+}
+Array.prototype.forEach.call(document.querySelectorAll(".seg button"),function(b){
+  b.onclick=function(){
+    ROLE_SEL=b.dataset.r;
+    Array.prototype.forEach.call(document.querySelectorAll(".seg button"),function(x){x.classList.toggle("on",x===b)});
+    document.getElementById("gerr").textContent="";
+  };
+});
+function doLogin(){
+  var pw=document.getElementById("gpw").value,er=document.getElementById("gerr");er.textContent="";
+  if(!pw)return;
+  sha(pw).then(function(h){
+    if(h!==(ROLE_SEL==="m"?ACC.m:ACC.u)){er.textContent="Clave incorrecta";return}
+    if(ROLE_SEL==="m"&&!isMaster()){er.textContent="Tu cuenta no tiene permiso de editor";return}
+    remember(ROLE_SEL,h);startSync(ROLE_SEL);
+  });
+}
+document.getElementById("gin").onclick=doLogin;
+document.getElementById("gpw").onkeydown=function(e){if(e.key==="Enter")doLogin()};
+document.getElementById("gset").onclick=function(){
+  var m=document.getElementById("xm").value,u=document.getElementById("xu").value,er=document.getElementById("gerr2");
+  if(m.length<4||u.length<4){er.textContent="Mínimo 4 caracteres en cada clave";return}
+  if(m===u){er.textContent="Las claves deben ser distintas";return}
+  Promise.all([sha(m),sha(u)]).then(function(hs){
+    return DBH.doc(ACCDOC).set({m:hs[0],u:hs[1]}).then(function(){ACC={m:hs[0],u:hs[1]};remember("m",hs[0]);startSync("m")});
+  }).catch(function(){er.textContent="No se pudo guardar. ¿Tienes permiso de editor?"});
+};
+document.getElementById("ck").onclick=function(){
+  if(!EDIT)return;
+  if(MODE!=="sync"){toast("Solo disponible con acceso sincronizado");return}
+  var m=document.getElementById("cm").value,u=document.getElementById("cu").value;
+  if(!m&&!u)return;
+  if((m&&m.length<4)||(u&&u.length<4)){toast("Mínimo 4 caracteres");return}
+  Promise.all([m?sha(m):ACC.m,u?sha(u):ACC.u]).then(function(hs){
+    if(hs[0]===hs[1]){toast("Las claves deben ser distintas");return}
+    return DBH.doc(ACCDOC).set({m:hs[0],u:hs[1]}).then(function(){ACC={m:hs[0],u:hs[1]};remember("m",hs[0]);document.getElementById("cm").value="";document.getElementById("cu").value="";toast("Claves actualizadas")});
+  }).catch(function(){toast("No se pudo cambiar")});
+};
+document.getElementById("out").onclick=function(){try{sessionStorage.removeItem(SES)}catch(e){}location.reload()};
+renderAll();
+boot();
+</script>
+</body>
+</html>
