@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e1a">
 <title>Propinas · Gestión Premium</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,7 +31,41 @@
         --info: #60a5fa;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    [data-theme="light"] {
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-card: #ffffff;
+        --bg-elevated: #f1f5f9;
+        --bg-input: #f8fafc;
+        --gold: #b8860b;
+        --gold-light: #daa520;
+        --gold-dark: #8b6508;
+        --gold-subtle: rgba(184, 134, 11, 0.08);
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --text-muted: #94a3b8;
+        --border: rgba(0, 0, 0, 0.08);
+        --border-hover: rgba(0, 0, 0, 0.15);
+    }
+
+    [data-theme="emerald"] {
+        --bg-primary: #022c22;
+        --bg-secondary: #064e3b;
+        --bg-card: #065f46;
+        --bg-elevated: #047857;
+        --bg-input: #064e3b;
+        --gold: #34d399;
+        --gold-light: #6ee7b7;
+        --gold-dark: #059669;
+        --gold-subtle: rgba(52, 211, 153, 0.1);
+        --text-primary: #ecfdf5;
+        --text-secondary: #a7f3d0;
+        --text-muted: #6ee7b7;
+        --border: rgba(255, 255, 255, 0.1);
+        --border-hover: rgba(255, 255, 255, 0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
 
     body {
         background: var(--bg-primary);
@@ -37,6 +74,7 @@
         overflow-x: hidden;
     }
 
+    /* ============ LOADER PREMIUM ============ */
     .loader-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: var(--bg-primary);
@@ -83,51 +121,60 @@
     .loader-title {
         font-size: 1.5rem; font-weight: 600;
         font-family: 'Cormorant Garamond', serif;
-        background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold-light) 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         margin-bottom: 0.4rem;
     }
     .loader-subtitle {
-        color: var(--text-secondary); font-size: 0.7rem;
-        text-transform: uppercase; letter-spacing: 3px;
+        color: var(--gold); font-size: 0.75rem;
+        text-transform: uppercase; letter-spacing: 2px;
         margin-bottom: 1.5rem;
+        font-weight: 500;
     }
-    .loader-dots { display: flex; gap: 0.4rem; }
-    .loader-dot {
-        width: 7px; height: 7px; background: var(--gold);
-        border-radius: 50%; animation: dotBounce 1.4s ease-in-out infinite;
+    
+    .loader-progress-container {
+        width: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-    .loader-dot:nth-child(2) { animation-delay: 0.2s; }
-    .loader-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes dotBounce {
-        0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-        40% { transform: scale(1); opacity: 1; }
-    }
+    
     .loader-progress {
-        width: 180px; height: 2px; background: var(--border);
-        border-radius: 2px; margin-top: 1.5rem; overflow: hidden;
+        width: 100%; height: 3px; background: var(--border);
+        border-radius: 2px; overflow: hidden;
     }
     .loader-progress-bar {
-        height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
-        width: 0%; animation: progressFill 1.8s ease-out forwards;
+        height: 100%; 
+        background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+        width: 0%;
+        transition: width 0.1s linear;
+        box-shadow: 0 0 10px var(--gold);
     }
-    @keyframes progressFill {
-        0% { width: 0%; } 30% { width: 40%; } 60% { width: 70%; } 100% { width: 100%; }
+    
+    .loader-percentage {
+        font-size: 0.85rem;
+        color: var(--gold);
+        font-weight: 600;
+        margin-top: 0.6rem;
+        font-family: 'Cormorant Garamond', serif;
+        letter-spacing: 1px;
     }
 
+    /* ============ LOGIN ============ */
     .login-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(10, 14, 26, 0.98); backdrop-filter: blur(30px);
+        background: rgba(10, 14, 26, 0.95); backdrop-filter: blur(30px);
         display: none; align-items: center; justify-content: center;
         z-index: 1000; padding: 1rem;
     }
+    [data-theme="light"] .login-overlay { background: rgba(248, 250, 252, 0.95); }
     .login-overlay.active { display: flex; animation: fadeIn 0.6s ease; }
 
     .login-modal {
-        background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+        background: var(--bg-card);
         border: 1px solid var(--border); border-radius: 24px;
         padding: 2.5rem 2rem; width: 100%; max-width: 420px;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
         text-align: center; animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .modal-logo {
@@ -139,7 +186,7 @@
     .modal-title {
         font-size: 1.8rem; font-weight: 600; margin-bottom: 0.4rem;
         font-family: 'Cormorant Garamond', serif;
-        background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold-light) 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .modal-subtitle {
@@ -151,7 +198,7 @@
         background: var(--bg-input); border: 1px solid var(--border);
         border-radius: 14px; padding: 1.1rem 1rem;
         display: flex; align-items: center; gap: 1rem;
-        cursor: pointer; transition: all 0.4s; text-align: left; color: white;
+        cursor: pointer; transition: all 0.4s; text-align: left; color: var(--text-primary);
     }
     .role-btn:hover {
         background: var(--bg-elevated); border-color: var(--gold);
@@ -173,7 +220,7 @@
     .input-group input {
         width: 100%; padding: 1rem; background: var(--bg-input);
         border: 1px solid var(--border); border-radius: 12px;
-        color: white; font-size: 1.2rem; letter-spacing: 14px;
+        color: var(--text-primary); font-size: 1.2rem; letter-spacing: 14px;
         text-align: center;
     }
     .input-group input:focus {
@@ -195,6 +242,7 @@
     .back-btn:hover { color: var(--gold); }
     .error-msg { color: var(--danger); font-size: 0.8rem; margin-bottom: 1rem; display: none; }
 
+    /* ============ APP ============ */
     .app-container { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.2rem; }
 
     .app-header {
@@ -211,7 +259,7 @@
     }
     .app-header h1 {
         font-size: 1.5rem; font-weight: 600; font-family: 'Cormorant Garamond', serif;
-        background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold-light) 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .app-subtitle {
@@ -219,6 +267,15 @@
         text-transform: uppercase; letter-spacing: 2px;
     }
     .header-right { display: flex; align-items: center; gap: 0.6rem; }
+    
+    .icon-btn {
+        background: var(--bg-card); border: 1px solid var(--border);
+        color: var(--text-secondary); width: 36px; height: 36px;
+        border-radius: 8px; cursor: pointer; transition: all 0.3s;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .icon-btn:hover { color: var(--gold); border-color: var(--gold); }
+
     .user-badge {
         display: flex; align-items: center; gap: 0.4rem;
         padding: 0.4rem 0.8rem; border-radius: 8px;
@@ -321,7 +378,7 @@
     .staff-input {
         flex: 1; padding: 0.7rem 1rem; background: var(--bg-input);
         border: 1px solid var(--border); border-radius: 8px;
-        color: white; font-size: 0.85rem;
+        color: var(--text-primary); font-size: 0.85rem;
     }
     .staff-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle); }
     .btn-add {
@@ -388,7 +445,7 @@
     .tip-input {
         width: 100%; padding: 0.5rem 0.7rem; background: var(--bg-input);
         border: 1px solid var(--border); border-radius: 6px;
-        color: white; font-size: 0.85rem; text-align: right;
+        color: var(--text-primary); font-size: 0.85rem; text-align: right;
         font-family: 'Cormorant Garamond', serif; font-weight: 600;
     }
     .tip-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-subtle); }
@@ -440,7 +497,7 @@
     .date-input {
         width: 100%; padding: 0.7rem 0.9rem; background: var(--bg-input);
         border: 1px solid var(--border); border-radius: 8px;
-        color: white; font-size: 0.85rem;
+        color: var(--text-primary); font-size: 0.85rem;
     }
     .btn-apply {
         padding: 0.7rem 1.3rem;
@@ -471,17 +528,19 @@
 
     .hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; text-align: center; font-style: italic; }
 
+    /* MODALES */
     .modal-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+        background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
         display: none; align-items: center; justify-content: center;
         z-index: 1500; padding: 1rem;
     }
     .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-    .day-modal {
-        background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+    
+    .modal-box {
+        background: var(--bg-card);
         border: 1px solid var(--border); border-radius: 18px;
-        padding: 1.5rem; width: 100%; max-width: 380px;
+        padding: 1.5rem; width: 100%; max-width: 400px;
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
     }
     .modal-header {
@@ -497,18 +556,20 @@
         cursor: pointer; font-size: 1.3rem; padding: 0.2rem;
     }
     .modal-close:hover { color: var(--danger); }
+    
     .form-group { margin-bottom: 1rem; }
     .form-group label {
         display: block; font-size: 0.7rem;
         color: var(--text-secondary); margin-bottom: 0.4rem;
         text-transform: uppercase; letter-spacing: 1px;
     }
-    .form-group input {
+    .form-group input, .form-group select {
         width: 100%; padding: 0.8rem; background: var(--bg-input);
         border: 1px solid var(--border); border-radius: 8px;
-        color: white; font-size: 0.95rem;
+        color: var(--text-primary); font-size: 0.95rem;
     }
-    .form-group input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle); }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle); }
+    
     .btn-submit {
         width: 100%; padding: 0.9rem;
         background: linear-gradient(135deg, var(--gold-light), var(--gold));
@@ -518,6 +579,56 @@
         font-size: 0.85rem;
     }
     .btn-submit:hover { transform: translateY(-2px); }
+
+    .theme-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .theme-option {
+        padding: 0.8rem 0.5rem;
+        background: var(--bg-input);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    .theme-option:hover { border-color: var(--gold); color: var(--gold); }
+    .theme-option.active { border-color: var(--gold); background: var(--gold-subtle); color: var(--gold); }
+    
+    .theme-preview {
+        width: 100%; height: 30px;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+    }
+    .theme-dark { background: linear-gradient(135deg, #0a0e1a, #131926); }
+    .theme-light { background: linear-gradient(135deg, #f8fafc, #ffffff); border: 1px solid #e2e8f0; }
+    .theme-emerald { background: linear-gradient(135deg, #022c22, #065f46); }
+
+    .app-info {
+        text-align: center;
+        padding: 1rem;
+        background: var(--bg-input);
+        border-radius: 10px;
+        margin-top: 1rem;
+    }
+    .app-info h4 { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; margin-bottom: 0.3rem; }
+    .app-info p { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; }
+    .app-version { 
+        display: inline-block; 
+        background: var(--gold-subtle); 
+        color: var(--gold); 
+        padding: 0.2rem 0.6rem; 
+        border-radius: 20px; 
+        font-size: 0.65rem; 
+        font-weight: 600; 
+        margin-top: 0.5rem;
+    }
 
     .sync-status {
         position: fixed;
@@ -609,6 +720,7 @@
 </head>
 <body>
 
+<!-- LOADER PREMIUM CON PORCENTAJE -->
 <div id="loaderOverlay" class="loader-overlay">
     <div class="loader-logo-container">
         <div class="loader-ring"></div>
@@ -616,14 +728,13 @@
         <div class="loader-logo"><i class="fas fa-coins"></i></div>
     </div>
     <h2 class="loader-title">Propinas</h2>
-    <p class="loader-subtitle">Gestión Premium</p>
-    <div class="loader-dots">
-        <div class="loader-dot"></div>
-        <div class="loader-dot"></div>
-        <div class="loader-dot"></div>
-    </div>
-    <div class="loader-progress">
-        <div class="loader-progress-bar"></div>
+    <p class="loader-subtitle">Conectando al servidor...</p>
+    
+    <div class="loader-progress-container">
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="progressBar"></div>
+        </div>
+        <div class="loader-percentage" id="progressText">0%</div>
     </div>
 </div>
 
@@ -676,6 +787,7 @@
             <div class="app-subtitle">Martes a domingo · cierre cada 15 días</div>
         </div>
         <div class="header-right">
+            <button class="icon-btn" onclick="openSettings()" title="Configuración"><i class="fas fa-gear"></i></button>
             <div id="userBadge" class="user-badge"></div>
             <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
@@ -787,8 +899,44 @@
     </div>
 </div>
 
+<!-- MODAL CONFIGURACIÓN -->
+<div id="settingsModal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="modal-title-small"><i class="fas fa-gear"></i> Configuración</h3>
+            <button class="modal-close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="form-group">
+            <label>Tema de la aplicación</label>
+            <div class="theme-options">
+                <div class="theme-option active" onclick="setTheme('dark')" id="theme-dark">
+                    <div class="theme-preview theme-dark"></div>
+                    Oscuro
+                </div>
+                <div class="theme-option" onclick="setTheme('light')" id="theme-light">
+                    <div class="theme-preview theme-light"></div>
+                    Claro
+                </div>
+                <div class="theme-option" onclick="setTheme('emerald')" id="theme-emerald">
+                    <div class="theme-preview theme-emerald"></div>
+                    Esmeralda
+                </div>
+            </div>
+        </div>
+
+        <div class="app-info">
+            <h4>Propinas Pro</h4>
+            <p>Sistema de gestión y reparto de propinas para quincenas.</p>
+            <p>Desarrollado con ❤️ para una administración eficiente.</p>
+            <span class="app-version">Versión 1.2.0</span>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AGREGAR DÍA -->
 <div id="dayModal" class="modal-overlay">
-    <div class="day-modal">
+    <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title-small">Agregar día</h3>
             <button class="modal-close" onclick="closeAddDayModal()"><i class="fas fa-times"></i></button>
@@ -811,11 +959,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-    // ⚠️ REEMPLAZA ESTOS VALORES CON LOS DE TU PROYECTO SUPABASE
     const SUPABASE_URL = 'https://amlqkpqubtkasdyzecyw.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtbHFrcHF1YnRrYXNkeXplY3l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNjU0NTUsImV4cCI6MjEwODk0MTQ1NX0.vUAZqFCdkeFckpLUahghdGt8TyuD8UIe9D0GprdT3yo';
 
-    // Inicializar Supabase
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const MASTER_PIN = "2910";
@@ -826,32 +972,51 @@
     let days = [];
     let startDate = '';
     let isSaving = false;
-    let docId = null; // ID del registro en Supabase
+    let docId = null;
 
-    // ESCUCHAR CAMBIOS EN TIEMPO REAL
+    // TEMA
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('app-theme', theme);
+        
+        document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+        document.getElementById(`theme-${theme}`).classList.add('active');
+        
+        const themeColors = {
+            'dark': '#0a0e1a',
+            'light': '#f8fafc',
+            'emerald': '#022c22'
+        };
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColors[theme]);
+    }
+
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('app-theme') || 'dark';
+        setTheme(savedTheme);
+    }
+
+    function openSettings() {
+        document.getElementById('settingsModal').classList.add('active');
+    }
+
+    function closeSettings() {
+        document.getElementById('settingsModal').classList.remove('active');
+    }
+
+    // REALTIME Y DATOS
     async function setupRealtime() {
         updateSyncStatus('Conectando...', true);
-        
-        // Primero cargar datos iniciales
         await loadData();
         
-        // Suscribirse a cambios en tiempo real
         supabase
             .channel('propinas_channel')
             .on('postgres_changes', 
                 { event: '*', schema: 'public', table: 'propinas' }, 
-                (payload) => {
-                    console.log('Cambio detectado:', payload);
-                    loadData();
-                }
+                () => loadData()
             )
             .subscribe((status) => {
-                console.log('Realtime status:', status);
-                if (status === 'SUBSCRIBED') {
-                    updateSyncStatus('En tiempo real ✓', true);
-                } else if (status === 'CHANNEL_ERROR') {
-                    updateSyncStatus('Error de conexión', false);
-                }
+                if (status === 'SUBSCRIBED') updateSyncStatus('En tiempo real ✓', true);
+                else if (status === 'CHANNEL_ERROR') updateSyncStatus('Error de conexión', false);
             });
     }
 
@@ -863,10 +1028,7 @@
                 .eq('key', 'quincena_actual')
                 .single();
             
-            if (error) {
-                console.error('Error al cargar:', error);
-                return;
-            }
+            if (error) { console.error('Error al cargar:', error); return; }
             
             if (data) {
                 docId = data.id;
@@ -880,12 +1042,9 @@
                     renderAll();
                 }
             }
-        } catch (err) {
-            console.error('Error:', err);
-        }
+        } catch (err) { console.error('Error:', err); }
     }
 
-    // GUARDAR EN SUPABASE
     async function saveToSupabase() {
         if (isSaving) return;
         isSaving = true;
@@ -895,27 +1054,16 @@
         
         try {
             if (docId) {
-                // Actualizar registro existente
                 const { error } = await supabase
                     .from('propinas')
-                    .update({ 
-                        data: appData,
-                        updated_at: new Date().toISOString()
-                    })
+                    .update({ data: appData, updated_at: new Date().toISOString() })
                     .eq('id', docId);
-                
                 if (error) throw error;
             } else {
-                // Crear nuevo registro
                 const { data, error } = await supabase
                     .from('propinas')
-                    .insert([{ 
-                        key: 'quincena_actual',
-                        data: appData
-                    }])
-                    .select()
-                    .single();
-                
+                    .insert([{ key: 'quincena_actual', data: appData }])
+                    .select().single();
                 if (error) throw error;
                 docId = data.id;
             }
@@ -924,7 +1072,6 @@
             console.error('Error al guardar:', error);
             updateSyncStatus('Error al guardar', false);
         }
-        
         isSaving = false;
     }
 
@@ -932,22 +1079,43 @@
         const status = document.getElementById('syncStatus');
         const textEl = document.getElementById('syncText');
         const dot = status.querySelector('.sync-dot');
-        
         status.style.display = 'flex';
         textEl.textContent = text;
         dot.style.background = connected ? 'var(--success)' : 'var(--danger)';
-        
         setTimeout(() => { status.style.display = 'none'; }, 3000);
     }
 
+    // ============ LOADER ANIMADO CON PORCENTAJE ============
     window.addEventListener('load', () => {
-        setupRealtime();
-        setTimeout(() => {
-            document.getElementById('loaderOverlay').classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById('loginOverlay').classList.add('active');
-            }, 300);
-        }, 2000);
+        loadTheme();
+        
+        let progress = 0;
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        
+        const interval = setInterval(() => {
+            // Incremento aleatorio para que se vea natural (como una carga real)
+            progress += Math.random() * 4 + 1; 
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                progressText.textContent = '100%';
+                
+                // Pausa breve al 100% antes de mostrar la app
+                setTimeout(() => {
+                    document.getElementById('loaderOverlay').classList.add('hidden');
+                    setTimeout(() => {
+                        document.getElementById('loginOverlay').classList.add('active');
+                        setupRealtime(); // Iniciar conexión a Supabase después del loader
+                    }, 300);
+                }, 600);
+            } else {
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.floor(progress) + '%';
+            }
+        }, 60); // Se actualiza cada 60ms (tarda ~2 segundos en llegar a 100%)
     });
 
     function showPinInput() {
@@ -1024,7 +1192,6 @@
 
         const dateObj = new Date(dateInput + 'T00:00:00');
         const dayOfWeek = dateObj.getDay();
-        
         if (dayOfWeek === 1) { alert('Solo se permiten días de martes a domingo (no lunes)'); return; }
 
         const dayName = VALID_DAYS[dayOfWeek];
@@ -1035,14 +1202,7 @@
         const attendance = {};
         staff.forEach(s => attendance[s] = 'presente');
 
-        days.push({
-            id: Date.now(),
-            date: dateInput,
-            dayName: dayName,
-            amount: amount,
-            attendance: attendance
-        });
-
+        days.push({ id: Date.now(), date: dateInput, dayName, amount, attendance });
         days.sort((a, b) => new Date(a.date) - new Date(b.date));
         
         closeAddDayModal();
@@ -1066,12 +1226,10 @@
     function cycleAttendance(dayId, name) {
         const day = days.find(d => d.id === dayId);
         if (!day) return;
-        
         const current = day.attendance[name] || 'presente';
         if (current === 'presente') day.attendance[name] = 'tarde';
         else if (current === 'tarde') day.attendance[name] = 'permiso';
         else day.attendance[name] = 'presente';
-        
         saveToSupabase();
     }
 
@@ -1096,23 +1254,18 @@
     function calcDayDistribution(day) {
         const totalStaff = staff.length;
         if (totalStaff === 0) return { perPerson: 0, toPozo: day.amount, presentes: 0 };
-        
         const perPerson = day.amount / totalStaff;
         const presentes = staff.filter(s => day.attendance[s] === 'presente').length;
         const distributed = perPerson * presentes;
         const toPozo = day.amount - distributed;
-        
         return { perPerson, toPozo, presentes };
     }
 
     function calcPersonTotal(name) {
-        let total = 0;
-        let daysWorked = 0;
-        let noWorkDays = [];
+        let total = 0, daysWorked = 0, noWorkDays = [];
         days.forEach((day) => {
             if (day.attendance[name] === 'presente') {
-                const dist = calcDayDistribution(day);
-                total += dist.perPerson;
+                total += calcDayDistribution(day).perPerson;
                 daysWorked++;
             } else {
                 noWorkDays.push(day.dayName.substring(0, 3) + ' ' + formatDate(day.date));
@@ -1123,10 +1276,7 @@
 
     function calcPozo() {
         let total = 0;
-        days.forEach(day => {
-            const dist = calcDayDistribution(day);
-            total += dist.toPozo;
-        });
+        days.forEach(day => { total += calcDayDistribution(day).toPozo; });
         return total;
     }
 
@@ -1135,17 +1285,12 @@
     }
 
     function renderAll() {
-        renderStats();
-        renderStaff();
-        renderDays();
-        renderSummary();
+        renderStats(); renderStaff(); renderDays(); renderSummary();
     }
 
     function renderStats() {
-        const pozo = calcPozo();
-        const total = calcTotalAmount();
-        document.getElementById('pozoAmount').textContent = `S/ ${pozo.toFixed(2)}`;
-        document.getElementById('totalAmount').textContent = `S/ ${total.toFixed(2)}`;
+        document.getElementById('pozoAmount').textContent = `S/ ${calcPozo().toFixed(2)}`;
+        document.getElementById('totalAmount').textContent = `S/ ${calcTotalAmount().toFixed(2)}`;
         document.getElementById('statDays').textContent = days.length;
         document.getElementById('statStaff').textContent = staff.length;
     }
@@ -1171,20 +1316,11 @@
         const today = new Date().toISOString().split('T')[0];
         
         let headerHTML = '<th>Día</th><th>Propina</th><th>Acción</th>';
-        staff.forEach(name => {
-            headerHTML += `<th>${name.substring(0, 4).toUpperCase()}</th>`;
-        });
+        staff.forEach(name => { headerHTML += `<th>${name.substring(0, 4).toUpperCase()}</th>`; });
         thead.innerHTML = headerHTML;
 
         if (days.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="${3 + staff.length}" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
-                        <i class="fas fa-calendar-plus" style="font-size: 1.5rem; margin-bottom: 0.4rem; display: block;"></i>
-                        No hay días registrados. Haz clic en "Agregar día".
-                    </td>
-                </tr>
-            `;
+            tbody.innerHTML = `<tr><td colspan="${3 + staff.length}" style="text-align: center; color: var(--text-muted); padding: 1.5rem;"><i class="fas fa-calendar-plus" style="font-size: 1.5rem; margin-bottom: 0.4rem; display: block;"></i>No hay días registrados. Haz clic en "Agregar día".</td></tr>`;
             return;
         }
 
@@ -1192,34 +1328,15 @@
             const isToday = day.date === today;
             return `
                 <tr class="${isToday ? 'today' : ''}">
-                    <td>
-                        <div class="day-info">
-                            <div class="day-name">${day.dayName}</div>
-                            <div class="day-date">${formatDate(day.date)}</div>
-                        </div>
-                    </td>
-                    <td>
-                        <input type="number" class="tip-input editable-action" 
-                               value="${day.amount}" 
-                               onchange="updateTip(${day.id}, this.value)" 
-                               step="0.01" min="0">
-                    </td>
-                    <td>
-                        <button class="delete-day-btn editable-action" onclick="deleteDay(${day.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
+                    <td><div class="day-info"><div class="day-name">${day.dayName}</div><div class="day-date">${formatDate(day.date)}</div></div></td>
+                    <td><input type="number" class="tip-input editable-action" value="${day.amount}" onchange="updateTip(${day.id}, this.value)" step="0.01" min="0"></td>
+                    <td><button class="delete-day-btn editable-action" onclick="deleteDay(${day.id})"><i class="fas fa-trash"></i></button></td>
                     ${staff.map(name => {
                         const status = day.attendance[name] || 'presente';
                         let icon = '<i class="fas fa-check" style="font-size: 0.8rem;"></i>';
                         if (status === 'tarde') icon = '<i class="fas fa-clock" style="font-size: 0.8rem;"></i>';
                         if (status === 'permiso') icon = '<i class="fas fa-file-alt" style="font-size: 0.8rem;"></i>';
-                        return `<td>
-                            <div class="att-cell ${status} editable-action" 
-                                 onclick="cycleAttendance(${day.id}, '${name}')">
-                                ${icon}
-                            </div>
-                        </td>`;
+                        return `<td><div class="att-cell ${status} editable-action" onclick="cycleAttendance(${day.id}, '${name}')">${icon}</div></td>`;
                     }).join('')}
                 </tr>
             `;
@@ -1236,12 +1353,7 @@
             const { total, daysWorked, noWorkDays } = calcPersonTotal(name);
             return `
                 <tr>
-                    <td>
-                        <div class="person-cell">
-                            <div class="staff-avatar">${name.charAt(0).toUpperCase()}</div>
-                            <span>${name}</span>
-                        </div>
-                    </td>
+                    <td><div class="person-cell"><div class="staff-avatar">${name.charAt(0).toUpperCase()}</div><span>${name}</span></div></td>
                     <td>${daysWorked}</td>
                     <td class="amount">S/ ${total.toFixed(2)}</td>
                     <td class="no-work-days">${noWorkDays.join(', ') || '—'}</td>
@@ -1265,38 +1377,19 @@
             const d = new Date(day.date + 'T00:00:00');
             d.setDate(d.getDate() + diff);
             day.date = d.toISOString().split('T')[0];
-            const dayOfWeek = d.getDay();
-            day.dayName = VALID_DAYS[dayOfWeek];
+            day.dayName = VALID_DAYS[d.getDay()];
         });
         days.sort((a, b) => new Date(a.date) - new Date(b.date));
         startDate = newStart;
         saveToSupabase();
     }
 
-    function saveData() {
-        saveToSupabase();
-    }
+    function saveData() { saveToSupabase(); }
+    function clearQuincena() { if (!confirm('¿Vaciar toda la quincena?')) return; days = []; startDate = ''; saveToSupabase(); }
+    function resetAll() { if (!confirm('¿Resetear TODO? Se perderán todos los datos.')) return; staff = []; days = []; startDate = ''; saveToSupabase(); }
 
-    function clearQuincena() {
-        if (!confirm('¿Vaciar toda la quincena?')) return;
-        days = [];
-        startDate = '';
-        saveToSupabase();
-    }
-
-    function resetAll() {
-        if (!confirm('¿Resetear TODO? Se perderán todos los datos.')) return;
-        staff = [];
-        days = [];
-        startDate = '';
-        saveToSupabase();
-    }
-
-    document.getElementById('dayModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('dayModal')) {
-            closeAddDayModal();
-        }
-    });
+    document.getElementById('dayModal').addEventListener('click', (e) => { if (e.target === document.getElementById('dayModal')) closeAddDayModal(); });
+    document.getElementById('settingsModal').addEventListener('click', (e) => { if (e.target === document.getElementById('settingsModal')) closeSettings(); });
 </script>
 
 </body>
