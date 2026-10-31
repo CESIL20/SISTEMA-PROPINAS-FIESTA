@@ -1,798 +1,426 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0a0e1a">
-<title>Propinas · Gestión Premium</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propinas Pro</title>
 <style>
-    :root {
-        --bg-primary: #0a0e1a; --bg-secondary: #0f1420; --bg-card: #131926;
-        --bg-elevated: #1a2235; --bg-input: #0f1420; --gold: #c9a961;
-        --gold-light: #e4c78b; --gold-dark: #a08440; --gold-subtle: rgba(201, 169, 97, 0.08);
-        --text-primary: #ffffff; --text-secondary: #8b95a5; --text-muted: #5a6478;
-        --border: rgba(255, 255, 255, 0.06); --border-hover: rgba(255, 255, 255, 0.12);
-        --success: #4ade80; --warning: #fbbf24; --danger: #f87171; --info: #60a5fa;
-    }
-    [data-theme="light"] {
-        --bg-primary: #f8fafc; --bg-secondary: #ffffff; --bg-card: #ffffff;
-        --bg-elevated: #f1f5f9; --bg-input: #f8fafc; --gold: #b8860b;
-        --gold-light: #daa520; --gold-dark: #8b6508; --gold-subtle: rgba(184, 134, 11, 0.08);
-        --text-primary: #0f172a; --text-secondary: #64748b; --text-muted: #94a3b8;
-        --border: rgba(0, 0, 0, 0.08); --border-hover: rgba(0, 0, 0, 0.15);
-    }
-    [data-theme="emerald"] {
-        --bg-primary: #022c22; --bg-secondary: #064e3b; --bg-card: #065f46;
-        --bg-elevated: #047857; --bg-input: #064e3b; --gold: #34d399;
-        --gold-light: #6ee7b7; --gold-dark: #059669; --gold-subtle: rgba(52, 211, 153, 0.1);
-        --text-primary: #ecfdf5; --text-secondary: #a7f3d0; --text-muted: #6ee7b7;
-        --border: rgba(255, 255, 255, 0.1); --border-hover: rgba(255, 255, 255, 0.2);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
-    body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#0a0e1a;color:#fff;min-height:100vh;overflow:hidden}
 
-    /* LOADER */
-    .loader-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: var(--bg-primary); display: flex; flex-direction: column;
-        align-items: center; justify-content: center; z-index: 2000;
-        transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    .loader-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader-logo-container { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
-    .loader-logo {
-        width: 70px; height: 70px; background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
-        border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        font-size: 1.8rem; color: var(--bg-primary); box-shadow: 0 10px 30px rgba(201, 169, 97, 0.4);
-        animation: logoPulse 2s ease-in-out infinite; position: relative; z-index: 2;
-    }
-    .loader-ring, .loader-ring-2 { position: absolute; border-radius: 50%; border: 2px solid transparent; animation: spin linear infinite; }
-    .loader-ring { top: 0; left: 0; width: 100%; height: 100%; border-top-color: var(--gold); border-right-color: var(--gold-light); animation-duration: 1.2s; }
-    .loader-ring-2 { top: 10px; left: 10px; right: 10px; bottom: 10px; border-bottom-color: var(--gold); border-left-color: var(--gold-dark); animation-duration: 1.8s; animation-direction: reverse; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes logoPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    .loader-title {
-        font-size: 1.5rem; font-weight: 600; font-family: 'Cormorant Garamond', serif;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold-light) 100%);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.4rem;
-    }
-    .loader-subtitle { color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; font-weight: 500; }
-    .loader-progress-container { width: 220px; display: flex; flex-direction: column; align-items: center; }
-    .loader-progress { width: 100%; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
-    .loader-progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); width: 0%; transition: width 0.1s linear; box-shadow: 0 0 10px var(--gold); }
-    .loader-percentage { font-size: 0.85rem; color: var(--gold); font-weight: 600; margin-top: 0.6rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 1px; }
+#loader{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0e1a;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
+.logo{width:100px;height:100px;background:linear-gradient(135deg,#e4c78b,#c9a961,#a08440);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#0a0e1a;margin-bottom:2rem;box-shadow:0 0 50px rgba(201,169,97,0.5);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.title{font-size:2rem;color:#e4c78b;margin-bottom:.5rem;font-family:Georgia,serif}
+.subtitle{color:#c9a961;font-size:.8rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:2rem}
+.bar{width:250px;height:4px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,#a08440,#e4c78b);width:0%;transition:width .1s}
+.pct{color:#c9a961;font-size:1rem;margin-top:1rem;font-weight:bold}
 
-    /* LOGIN */
-    .login-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(10, 14, 26, 0.95); backdrop-filter: blur(30px);
-        display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
-    }
-    [data-theme="light"] .login-overlay { background: rgba(248, 250, 252, 0.95); }
-    .login-overlay.active { display: flex; animation: fadeIn 0.6s ease; }
-    .login-modal {
-        background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px;
-        padding: 2.5rem 2rem; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-        text-align: center; animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .modal-logo {
-        width: 68px; height: 68px; background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
-        border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 1.5rem; font-size: 1.7rem; color: var(--bg-primary);
-    }
-    .modal-title {
-        font-size: 1.8rem; font-weight: 600; margin-bottom: 0.4rem; font-family: 'Cormorant Garamond', serif;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold-light) 100%);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .modal-subtitle { color: var(--text-secondary); font-size: 0.75rem; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 3px; }
-    .role-selector { display: flex; flex-direction: column; gap: 0.7rem; }
-    .role-btn {
-        background: var(--bg-input); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1rem;
-        display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: all 0.4s; text-align: left; color: var(--text-primary);
-    }
-    .role-btn:hover { background: var(--bg-elevated); border-color: var(--gold); transform: translateY(-2px); }
-    .role-icon {
-        width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-        font-size: 1.1rem; background: var(--gold-subtle); color: var(--gold); border: 1px solid rgba(201, 169, 97, 0.2);
-    }
-    .role-info { flex: 1; }
-    .role-info h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
-    .role-info p { font-size: 0.7rem; color: var(--text-secondary); }
-    .pin-area { display: none; animation: fadeIn 0.4s ease; }
-    .pin-area.active { display: block; }
-    .role-selector.hidden { display: none; }
-    .input-group { position: relative; margin-bottom: 1.2rem; }
-    .input-group input {
-        width: 100%; padding: 1rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px;
-        color: var(--text-primary); font-size: 1.2rem; letter-spacing: 14px; text-align: center;
-    }
-    .input-group input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle); }
-    .btn-primary {
-        width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
-        border: none; border-radius: 12px; color: var(--bg-primary); font-weight: 600; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
-    }
-    .btn-primary:hover { transform: translateY(-2px); }
-    .back-btn { background: none; border: none; color: var(--text-secondary); margin-top: 1rem; cursor: pointer; font-size: 0.85rem; }
-    .back-btn:hover { color: var(--gold); }
-    .error-msg { color: var(--danger); font-size: 0.8rem; margin-bottom: 1rem; display: none; }
+#login{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,14,26,0.98);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.box{background:#131926;border:1px solid rgba(201,169,97,0.3);border-radius:20px;padding:2rem;width:100%;max-width:380px;text-align:center}
+.box .logo{width:70px;height:70px;font-size:1.8rem;margin-bottom:1rem}
+.box .title{font-size:1.6rem;margin-bottom:.3rem}
+.box .subtitle{margin-bottom:1.5rem}
+.btn{background:#0f1420;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .3s;margin-bottom:.7rem;width:100%;color:#fff;text-align:left}
+.btn:hover{border-color:#c9a961;transform:translateY(-2px)}
+.btn-ico{width:45px;height:45px;background:rgba(201,169,97,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#c9a961}
+.btn-info{flex:1}
+.btn-info h3{font-size:.9rem;margin-bottom:2px}
+.btn-info p{font-size:.7rem;color:#8b95a5}
+.pin-box{display:none}
+.pin-box.show{display:block}
+.pin{width:100%;padding:1rem;background:#0f1420;border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-size:1.3rem;letter-spacing:15px;text-align:center;margin-bottom:1rem}
+.pin:focus{outline:none;border-color:#c9a961}
+.gold-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#e4c78b,#c9a961);border:none;border-radius:12px;color:#0a0e1a;font-weight:bold;cursor:pointer;font-size:.95rem;text-transform:uppercase}
+.back{background:none;border:none;color:#8b95a5;margin-top:1rem;cursor:pointer;font-size:.85rem}
+.err{color:#f87171;font-size:.8rem;margin-bottom:.8rem;display:none}
 
-    /* APP */
-    .app-container { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.2rem; }
-    .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .header-left { flex: 1; }
-    .header-logo-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.3rem; }
-    .header-logo {
-        width: 40px; height: 40px; background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
-        border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--bg-primary);
-    }
-    .app-header h1 {
-        font-size: 1.5rem; font-weight: 600; font-family: 'Cormorant Garamond', serif;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold-light) 100%);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .app-subtitle { color: var(--text-secondary); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
-    .header-right { display: flex; align-items: center; gap: 0.6rem; }
-    .icon-btn {
-        background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px;
-        border-radius: 8px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
-    }
-    .icon-btn:hover { color: var(--gold); border-color: var(--gold); }
-    .user-badge { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
-    .user-badge.master { background: var(--gold-subtle); color: var(--gold); border: 1px solid rgba(201, 169, 97, 0.2); }
-    .user-badge.client { background: rgba(96, 165, 250, 0.08); color: var(--info); border: 1px solid rgba(96, 165, 250, 0.2); }
-    .logout-btn {
-        background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 0.4rem 0.8rem;
-        border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 0.75rem;
-    }
-    .logout-btn:hover { background: rgba(248, 113, 113, 0.1); color: var(--danger); }
+#app{display:none;max-width:1100px;margin:0 auto;padding:1.5rem 1rem}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.1);flex-wrap:wrap;gap:1rem}
+.h-left{display:flex;align-items:center;gap:.8rem}
+.h-ico{width:40px;height:40px;background:linear-gradient(135deg,#e4c78b,#c9a961);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#0a0e1a}
+.h-title{font-size:1.4rem;color:#e4c78b;font-family:Georgia,serif}
+.h-sub{font-size:.7rem;color:#8b95a5;letter-spacing:2px;text-transform:uppercase}
+.h-right{display:flex;align-items:center;gap:.6rem}
+.badge{padding:.4rem .8rem;border-radius:8px;font-size:.7rem;font-weight:bold;text-transform:uppercase}
+.badge.m{background:rgba(201,169,97,0.1);color:#c9a961;border:1px solid rgba(201,169,97,0.3)}
+.badge.c{background:rgba(96,165,250,0.1);color:#60a5fa;border:1px solid rgba(96,165,250,0.3)}
+.out{background:#131926;border:1px solid rgba(255,255,255,0.1);color:#8b95a5;padding:.4rem .8rem;border-radius:8px;cursor:pointer;font-size:.75rem}
 
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-bottom: 1.2rem; }
-    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; transition: all 0.3s; }
-    .stat-card.highlight { background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%); border-color: rgba(201, 169, 97, 0.25); }
-    .stat-card.total { background: linear-gradient(135deg, rgba(74, 222, 128, 0.05) 0%, var(--bg-card) 100%); border-color: rgba(74, 222, 128, 0.2); }
-    .stat-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); margin-bottom: 0.3rem; font-weight: 600; }
-    .stat-value { font-size: 1.5rem; font-weight: 700; font-family: 'Cormorant Garamond', serif; letter-spacing: -0.5px; }
-    .stat-value.gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .stat-value.green { color: var(--success); }
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1.2rem}
+.st{background:#131926;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:.9rem}
+.st.gold{border-color:rgba(201,169,97,0.3)}
+.st-l{font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:#8b95a5;margin-bottom:.3rem}
+.st-v{font-size:1.5rem;font-weight:bold;font-family:Georgia,serif}
+.st-v.gold{color:#e4c78b}
+.st-v.green{color:#4ade80}
 
-    .section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; margin-bottom: 1rem; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.8rem; }
-    .section-header-left { display: flex; align-items: center; gap: 0.8rem; }
-    .section-header-left::before { content: ''; width: 3px; height: 18px; background: linear-gradient(180deg, var(--gold-light), var(--gold)); border-radius: 2px; }
-    .section-title { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); }
-    .btn-add-day { padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--gold-light), var(--gold)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.75rem; }
-    .btn-add-day:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201, 169, 97, 0.3); }
-    .staff-input-row { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
-    .staff-input { flex: 1; padding: 0.7rem 1rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 0.85rem; }
-    .staff-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle); }
-    .btn-add { padding: 0.7rem 1.3rem; background: linear-gradient(135deg, var(--gold-light), var(--gold)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.8rem; }
-    .btn-add:hover { transform: translateY(-2px); }
-    .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; }
-    .staff-chip { display: flex; align-items: center; gap: 0.6rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.8rem; }
-    .staff-avatar { width: 32px; height: 32px; background: var(--gold-subtle); border: 1px solid rgba(201, 169, 97, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--gold); font-size: 0.8rem; font-family: 'Cormorant Garamond', serif; flex-shrink: 0; }
-    .staff-name { flex: 1; font-weight: 500; font-size: 0.85rem; }
-    .staff-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.9rem; padding: 0.2rem; }
-    .staff-remove:hover { color: var(--danger); }
-    .status-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .status-tab { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; font-size: 0.7rem; font-weight: 500; color: var(--text-secondary); }
-    .status-tab.presente { border-color: rgba(74, 222, 128, 0.3); color: var(--success); }
-    .status-tab.tarde { border-color: rgba(251, 191, 36, 0.3); color: var(--warning); }
-    .status-tab.permiso { border-color: rgba(96, 165, 250, 0.3); color: var(--info); }
-    .days-table-container { overflow-x: auto; margin-bottom: 0.8rem; }
-    .days-table { width: 100%; border-collapse: collapse; min-width: 500px; }
-    .days-table th { background: var(--bg-input); padding: 0.7rem; text-align: left; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
-    .days-table td { padding: 0.7rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .days-table tr.today { background: var(--gold-subtle); }
-    .days-table tr.today td:first-child { color: var(--gold); font-weight: 600; }
-    .days-table tr.today td:first-child::after { content: ' ●'; color: var(--gold); font-size: 0.5rem; }
-    .day-info { display: flex; flex-direction: column; gap: 0.1rem; }
-    .day-name { font-weight: 600; font-size: 0.85rem; }
-    .day-date { font-size: 0.7rem; color: var(--text-muted); }
-    .tip-input { width: 100%; padding: 0.5rem 0.7rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 0.85rem; text-align: right; font-family: 'Cormorant Garamond', serif; font-weight: 600; }
-    .tip-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-subtle); }
-    .att-cell { width: 38px; height: 38px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; font-size: 1rem; margin: 0 auto; }
-    .att-cell:hover { transform: scale(1.05); border-color: var(--border-hover); }
-    .att-cell.presente { background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.3); color: var(--success); }
-    .att-cell.tarde { background: rgba(251, 191, 36, 0.08); border-color: rgba(251, 191, 36, 0.3); color: var(--warning); }
-    .att-cell.permiso { background: rgba(96, 165, 250, 0.08); border-color: rgba(96, 165, 250, 0.3); color: var(--info); }
-    .delete-day-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.9rem; padding: 0.3rem; }
-    .delete-day-btn:hover { color: var(--danger); }
-    .summary-table { width: 100%; border-collapse: collapse; }
-    .summary-table th { background: var(--bg-input); padding: 0.7rem; text-align: left; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
-    .summary-table td { padding: 0.7rem; border-bottom: 1px solid var(--border); }
-    .summary-table .person-cell { display: flex; align-items: center; gap: 0.6rem; }
-    .summary-table .amount { background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600; font-size: 0.95rem; font-family: 'Cormorant Garamond', serif; }
-    .no-work-days { font-size: 0.7rem; color: var(--text-muted); font-style: italic; }
-    .date-controls { display: flex; gap: 0.6rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1rem; }
-    .date-input-group { flex: 1; min-width: 180px; }
-    .date-input-group label { display: block; font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 1px; }
-    .date-input { width: 100%; padding: 0.7rem 0.9rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 0.85rem; }
-    .btn-apply { padding: 0.7rem 1.3rem; background: linear-gradient(135deg, var(--gold-light), var(--gold)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.8rem; }
-    .btn-apply:hover { transform: translateY(-2px); }
-    .action-buttons { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-    .btn-save { flex: 1; min-width: 120px; padding: 0.8rem; background: linear-gradient(135deg, var(--gold-light), var(--gold)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.8rem; }
-    .btn-save:hover { transform: translateY(-2px); }
-    .btn-danger { flex: 1; min-width: 120px; padding: 0.8rem; background: transparent; border: 1px solid rgba(248, 113, 113, 0.3); border-radius: 8px; color: var(--danger); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.8rem; }
-    .btn-danger:hover { background: rgba(248, 113, 113, 0.08); border-color: var(--danger); }
-    .btn-danger.full { width: 100%; margin-top: 0.6rem; }
-    .hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; text-align: center; font-style: italic; }
+.sec{background:#131926;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.2rem;margin-bottom:1rem}
+.sec-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sec-h-l{display:flex;align-items:center;gap:.8rem}
+.sec-h-l::before{content:'';width:3px;height:18px;background:linear-gradient(180deg,#e4c78b,#c9a961);border-radius:2px}
+.sec-t{font-size:.8rem;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#8b95a5}
+.add-btn{padding:.5rem 1rem;background:linear-gradient(135deg,#e4c78b,#c9a961);border:none;border-radius:8px;color:#0a0e1a;font-weight:bold;cursor:pointer;font-size:.75rem}
+.in-row{display:flex;gap:.6rem;margin-bottom:1rem}
+.in-row input{flex:1;padding:.7rem;background:#0f1420;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:.85rem}
+.in-row input:focus{outline:none;border-color:#c9a961}
+.in-row button{padding:.7rem 1.3rem;background:linear-gradient(135deg,#e4c78b,#c9a961);border:none;border-radius:8px;color:#0a0e1a;font-weight:bold;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
+.chip{display:flex;align-items:center;gap:.6rem;background:#0f1420;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:.7rem}
+.av{width:32px;height:32px;background:rgba(201,169,97,0.1);border:1px solid rgba(201,169,97,0.3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#c9a961;flex-shrink:0}
+.nm{flex:1;font-size:.85rem}
+.rm{background:none;border:none;color:#8b95a5;cursor:pointer;font-size:.9rem}
+.rm:hover{color:#f87171}
+.tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.tab{padding:.4rem .8rem;background:#0f1420;border:1px solid rgba(255,255,255,0.06);border-radius:6px;font-size:.7rem;color:#8b95a5}
+.tab.p{border-color:rgba(74,222,128,0.3);color:#4ade80}
+.tab.t{border-color:rgba(251,191,36,0.3);color:#fbbf24}
+.tab.m{border-color:rgba(96,165,250,0.3);color:#60a5fa}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th{background:#0f1420;padding:.7rem;text-align:left;font-size:.65rem;text-transform:uppercase;color:#8b95a5;border-bottom:1px solid rgba(255,255,255,0.06)}
+td{padding:.7rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+tr.today{background:rgba(201,169,97,0.05)}
+tr.today td:first-child{color:#c9a961;font-weight:bold}
+.dn{font-weight:bold;font-size:.85rem}
+.dd{font-size:.7rem;color:#8b95a5}
+.ti{width:100%;padding:.5rem;background:#0f1420;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;text-align:right;font-size:.85rem}
+.ti:focus{outline:none;border-color:#c9a961}
+.att{width:38px;height:38px;background:#0f1420;border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:0 auto;font-size:1rem}
+.att.p{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:#4ade80}
+.att.t{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3);color:#fbbf24}
+.att.m{background:rgba(96,165,250,0.1);border-color:rgba(96,165,250,0.3);color:#60a5fa}
+.db{background:none;border:none;color:#8b95a5;cursor:pointer}
+.db:hover{color:#f87171}
+.amt{color:#e4c78b;font-weight:bold;font-family:Georgia,serif}
+.hint{font-size:.7rem;color:#8b95a5;text-align:center;margin-top:.6rem}
+.acts{display:flex;gap:.6rem;flex-wrap:wrap}
+.sv{flex:1;padding:.8rem;background:linear-gradient(135deg,#e4c78b,#c9a961);border:none;border-radius:8px;color:#0a0e1a;font-weight:bold;cursor:pointer}
+.dg{flex:1;padding:.8rem;background:transparent;border:1px solid rgba(248,113,113,0.3);border-radius:8px;color:#f87171;font-weight:bold;cursor:pointer}
 
-    /* MODALES */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 1rem; }
-    .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-    .modal-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); }
-    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
-    .modal-title-small { font-size: 1.2rem; font-weight: 600; font-family: 'Cormorant Garamond', serif; color: var(--gold); }
-    .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.3rem; padding: 0.2rem; }
-    .modal-close:hover { color: var(--danger); }
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 1px; }
-    .form-group input, .form-group select { width: 100%; padding: 0.8rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 0.95rem; }
-    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle); }
-    .btn-submit { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, var(--gold-light), var(--gold)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; }
-    .btn-submit:hover { transform: translateY(-2px); }
-    .theme-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
-    .theme-option { padding: 0.8rem 0.5rem; background: var(--bg-input); border: 2px solid var(--border); border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
-    .theme-option:hover { border-color: var(--gold); color: var(--gold); }
-    .theme-option.active { border-color: var(--gold); background: var(--gold-subtle); color: var(--gold); }
-    .theme-preview { width: 100%; height: 30px; border-radius: 6px; margin-bottom: 0.5rem; }
-    .theme-dark { background: linear-gradient(135deg, #0a0e1a, #131926); }
-    .theme-light { background: linear-gradient(135deg, #f8fafc, #ffffff); border: 1px solid #e2e8f0; }
-    .theme-emerald { background: linear-gradient(135deg, #022c22, #065f46); }
-    .app-info { text-align: center; padding: 1rem; background: var(--bg-input); border-radius: 10px; margin-top: 1rem; }
-    .app-info h4 { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; margin-bottom: 0.3rem; }
-    .app-info p { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; }
-    .app-version { display: inline-block; background: var(--gold-subtle); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.65rem; font-weight: 600; margin-top: 0.5rem; }
-    .sync-status { position: fixed; top: 10px; right: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.7rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.4rem; z-index: 500; }
-    .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    body.read-only .editable-action { pointer-events: none; opacity: 0.4; }
-    body.read-only .att-cell { pointer-events: none; }
-    body.read-only .btn-save, body.read-only .btn-danger, body.read-only .btn-add, body.read-only .btn-apply, body.read-only .btn-add-day { pointer-events: none; opacity: 0.4; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
-    @media (max-width: 769px) { .app-container { padding: 1.2rem 1rem; } .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.3rem; } .stat-card { padding: 0.8rem; } .stat-value { font-size: 1.3rem; } .section { padding: 1rem; } }
-    @media (max-width: 480px) { .app-container { padding: 1rem 0.8rem; } .app-header { flex-direction: column; gap: 0.8rem; align-items: flex-start; } .header-right { width: 100%; justify-content: space-between; } .app-header h1 { font-size: 1.3rem; } .stats-grid { gap: 0.25rem; margin-bottom: 1rem; } .stat-card { padding: 0.7rem 0.6rem; } .stat-value { font-size: 1.2rem; } .stat-label { font-size: 0.55rem; letter-spacing: 1px; } .section { padding: 0.9rem; margin-bottom: 0.8rem; } .staff-input-row { flex-direction: column; } .btn-add { width: 100%; } .staff-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } .section-header { flex-direction: column; align-items: flex-start; } .btn-add-day { width: 100%; } .date-controls { flex-direction: column; align-items: stretch; } .btn-apply { width: 100%; } .action-buttons { flex-direction: column; } .btn-save, .btn-danger { min-width: 100%; } }
-    @media (max-width: 375px) { .app-header h1 { font-size: 1.1rem; } .header-logo { width: 34px; height: 34px; font-size: 0.95rem; } .stat-value { font-size: 1.1rem; } .section { padding: 0.8rem; } .staff-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 250px) { .app-container { padding: 0.5rem 0.4rem; } .stats-grid { gap: 0.2rem; } .stat-card { padding: 0.5rem 0.4rem; border-radius: 8px; } .stat-value { font-size: 0.95rem; } .stat-label { font-size: 0.45rem; letter-spacing: 0.5px; margin-bottom: 0.15rem; } .section { padding: 0.6rem; margin-bottom: 0.6rem; border-radius: 10px; } .section-header { margin-bottom: 0.6rem; padding-bottom: 0.5rem; } .section-header::before { height: 14px; } .section-title { font-size: 0.6rem; } .days-table th, .days-table td { padding: 0.4rem; font-size: 0.6rem; } .att-cell { width: 28px; height: 28px; font-size: 0.7rem; } .tip-input { padding: 0.3rem 0.4rem; font-size: 0.7rem; } }
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:1500;padding:1rem}
+.modal.show{display:flex}
+.m-box{background:#131926;border:1px solid rgba(201,169,97,0.3);border-radius:18px;padding:1.5rem;width:100%;max-width:380px}
+.m-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+.m-h h3{color:#c9a961;font-family:Georgia,serif}
+.m-x{background:none;border:none;color:#8b95a5;cursor:pointer;font-size:1.3rem}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.7rem;color:#8b95a5;margin-bottom:.4rem;text-transform:uppercase}
+.fg input{width:100%;padding:.8rem;background:#0f1420;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:.95rem}
+.fg input:focus{outline:none;border-color:#c9a961}
+
+@media(max-width:769px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.header{flex-direction:column;align-items:flex-start}.h-right{width:100%;justify-content:space-between}.stats{grid-template-columns:repeat(2,1fr)}.in-row{flex-direction:column}.in-row button{width:100%}.grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.acts{flex-direction:column}.sv,.dg{min-width:100%}}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loaderOverlay" class="loader-overlay">
-    <div class="loader-logo-container">
-        <div class="loader-ring"></div>
-        <div class="loader-ring-2"></div>
-        <div class="loader-logo"><i class="fas fa-coins"></i></div>
-    </div>
-    <h2 class="loader-title">Propinas</h2>
-    <p class="loader-subtitle">Conectando al servidor...</p>
-    <div class="loader-progress-container">
-        <div class="loader-progress">
-            <div class="loader-progress-bar" id="progressBar"></div>
-        </div>
-        <div class="loader-percentage" id="progressText">0%</div>
-    </div>
+<div id="loader">
+  <div class="logo">💰</div>
+  <div class="title">Propinas</div>
+  <div class="subtitle">Conectando al servidor...</div>
+  <div class="bar"><div class="fill" id="bar"></div></div>
+  <div class="pct" id="pct">0%</div>
 </div>
 
-<div id="syncStatus" class="sync-status" style="display: none;">
-    <div class="sync-dot"></div>
-    <span id="syncText">Conectando...</span>
+<div id="login">
+  <div class="box">
+    <div class="logo">💰</div>
+    <div class="title">Propinas</div>
+    <div class="subtitle">Elige cómo entrar</div>
+    <div id="roles">
+      <button class="btn" onclick="enterApp('client')">
+        <div class="btn-ico">👁</div>
+        <div class="btn-info"><h3>Entrar como usuario</h3><p>Solo lectura</p></div>
+      </button>
+      <button class="btn" onclick="showPin()">
+        <div class="btn-ico">👑</div>
+        <div class="btn-info"><h3>Entrar como máster</h3><p>Administración total</p></div>
+      </button>
+    </div>
+    <div id="pinBox" class="pin-box">
+      <input type="password" class="pin" id="pin" placeholder="••••" maxlength="4">
+      <div class="err" id="err">PIN incorrecto</div>
+      <button class="gold-btn" onclick="checkPin()">Desbloquear</button>
+      <button class="back" onclick="hidePin()">← Volver</button>
+    </div>
+  </div>
 </div>
 
-<div id="loginOverlay" class="login-overlay">
-    <div class="login-modal">
-        <div class="modal-logo"><i class="fas fa-coins"></i></div>
-        <h2 class="modal-title">Propinas</h2>
-        <p class="modal-subtitle">Elige cómo entrar</p>
-        <div id="roleSelector" class="role-selector">
-            <div class="role-btn" onclick="loginAsClient()">
-                <div class="role-icon"><i class="fas fa-eye"></i></div>
-                <div class="role-info"><h3>Entrar como usuario</h3><p>Solo lectura</p></div>
-            </div>
-            <div class="role-btn" onclick="showPinInput()">
-                <div class="role-icon"><i class="fas fa-crown"></i></div>
-                <div class="role-info"><h3>Entrar como máster</h3><p>Administración total</p></div>
-            </div>
-        </div>
-        <div id="pinArea" class="pin-area">
-            <div class="input-group">
-                <input type="password" id="masterPin" placeholder="••••" maxlength="4" onkeypress="handleEnter(event)">
-            </div>
-            <p id="errorMsg" class="error-msg">PIN incorrecto</p>
-            <button class="btn-primary" onclick="verifyPin()">Desbloquear</button>
-            <button class="back-btn" onclick="backToRoles()"><i class="fas fa-arrow-left"></i> Volver</button>
-        </div>
+<div id="app">
+  <div class="header">
+    <div class="h-left">
+      <div class="h-ico">💰</div>
+      <div>
+        <div class="h-title">Propinas por quincena</div>
+        <div class="h-sub">Martes a domingo · cierre cada 15 días</div>
+      </div>
     </div>
+    <div class="h-right">
+      <div class="badge" id="badge"></div>
+      <button class="out" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="st gold"><div class="st-l">Pozo</div><div class="st-v gold" id="pozo">S/ 0.00</div></div>
+    <div class="st"><div class="st-l">Total propinas</div><div class="st-v green" id="total">S/ 0.00</div></div>
+    <div class="st"><div class="st-l">Días</div><div class="st-v" id="nDays">0</div></div>
+    <div class="st"><div class="st-l">Personal</div><div class="st-v" id="nStaff">0</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Personal</div></div></div>
+    <div class="in-row">
+      <input type="text" id="newStaff" placeholder="Nombre">
+      <button onclick="addStaff()">Agregar</button>
+    </div>
+    <div class="grid" id="staffGrid"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">
+      <div class="sec-h-l"><div class="sec-t">Asistencia y propinas</div></div>
+      <button class="add-btn" onclick="openDayModal()">+ Agregar día</button>
+    </div>
+    <div class="tabs">
+      <div class="tab p">✔ Presente</div>
+      <div class="tab t">⏰ Tarde</div>
+      <div class="tab m">📝 Permiso</div>
+    </div>
+    <div class="tw">
+      <table><thead><tr id="dayHead"><th>Día</th><th>Propina</th><th>Acción</th></tr></thead>
+      <tbody id="dayBody"></tbody></table>
+    </div>
+    <div class="hint">Toca una celda para cambiar. Tarde y permiso no reciben ese día → va al pozo.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Resumen del reparto</div></div></div>
+    <div class="tw">
+      <table><thead><tr><th>Persona</th><th>Días</th><th>Recibe</th><th>Sin recibir</th></tr></thead>
+      <tbody id="sumBody"></tbody></table>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Datos</div></div></div>
+    <div class="acts">
+      <button class="sv" onclick="saveData()">💾 Guardar</button>
+      <button class="dg" onclick="clearAll()">🗑 Vaciar todo</button>
+    </div>
+  </div>
 </div>
 
-<div id="appContainer" class="app-container">
-    <header class="app-header">
-        <div class="header-left">
-            <div class="header-logo-row">
-                <div class="header-logo"><i class="fas fa-coins"></i></div>
-                <h1>Propinas por quincena</h1>
-            </div>
-            <div class="app-subtitle">Martes a domingo · cierre cada 15 días</div>
-        </div>
-        <div class="header-right">
-            <button class="icon-btn" onclick="openSettings()" title="Configuración"><i class="fas fa-gear"></i></button>
-            <div id="userBadge" class="user-badge"></div>
-            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</button>
-        </div>
-    </header>
-
-    <div class="stats-grid">
-        <div class="stat-card highlight"><div class="stat-label">Pozo</div><div class="stat-value gold" id="pozoAmount">S/ 0.00</div></div>
-        <div class="stat-card total"><div class="stat-label">Total propinas</div><div class="stat-value green" id="totalAmount">S/ 0.00</div></div>
-        <div class="stat-card"><div class="stat-label">Días</div><div class="stat-value" id="statDays">0</div></div>
-        <div class="stat-card"><div class="stat-label">Personal</div><div class="stat-value" id="statStaff">0</div></div>
+<div class="modal" id="dayModal">
+  <div class="m-box">
+    <div class="m-h">
+      <h3>Agregar día</h3>
+      <button class="m-x" onclick="closeDayModal()">✕</button>
     </div>
-
-    <div class="section">
-        <div class="section-header"><div class="section-header-left"><div class="section-title">Personal</div></div></div>
-        <div class="staff-input-row">
-            <input type="text" id="staffNameInput" class="staff-input editable-action" placeholder="Nombre">
-            <button class="btn-add editable-action" onclick="addStaff()">Agregar</button>
-        </div>
-        <div id="staffGrid" class="staff-grid"></div>
-    </div>
-
-    <div class="section">
-        <div class="section-header">
-            <div class="section-header-left"><div class="section-title">Asistencia y propinas</div></div>
-            <button class="btn-add-day editable-action" onclick="openAddDayModal()"><i class="fas fa-plus"></i> Agregar día</button>
-        </div>
-        <div class="status-tabs">
-            <div class="status-tab presente"><i class="fas fa-check"></i> Presente</div>
-            <div class="status-tab tarde"><i class="fas fa-clock"></i> Tarde</div>
-            <div class="status-tab permiso"><i class="fas fa-file-alt"></i> Permiso</div>
-        </div>
-        <div class="days-table-container">
-            <table class="days-table" id="daysTable">
-                <thead><tr><th>Día</th><th>Propina</th><th>Acción</th></tr></thead>
-                <tbody id="daysTableBody"></tbody>
-            </table>
-        </div>
-        <p class="hint">Toca una celda para cambiar. Tarde y permiso no reciben ese día → va al pozo.</p>
-    </div>
-
-    <div class="section">
-        <div class="section-header"><div class="section-header-left"><div class="section-title">Resumen del reparto</div></div></div>
-        <div class="days-table-container">
-            <table class="summary-table" id="summaryTable">
-                <thead><tr><th>Persona</th><th>Días</th><th>Recibe</th><th>Sin recibir</th></tr></thead>
-                <tbody id="summaryTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="section-header"><div class="section-header-left"><div class="section-title">Fechas y datos</div></div></div>
-        <div class="date-controls">
-            <div class="date-input-group">
-                <label>Inicio de esta quincena</label>
-                <input type="date" id="startDate" class="date-input editable-action">
-            </div>
-            <button class="btn-apply editable-action" onclick="applyStartDate()">Aplicar</button>
-        </div>
-        <p class="hint" style="text-align: left; margin-top: 0; margin-bottom: 1rem;">Mueve todas las fechas guardadas al nuevo inicio.</p>
-        <div class="action-buttons">
-            <button class="btn-save editable-action" onclick="saveData()"><i class="fas fa-save"></i> Guardar</button>
-            <button class="btn-danger editable-action" onclick="clearQuincena()">Vaciar quincena</button>
-        </div>
-        <button class="btn-danger full editable-action" onclick="resetAll()">Resetear todo</button>
-    </div>
+    <div class="fg"><label>Fecha</label><input type="date" id="dDate"></div>
+    <div class="fg"><label>Monto (S/)</label><input type="number" id="dAmount" step="0.01" min="0" placeholder="0.00"></div>
+    <button class="gold-btn" onclick="addDay()">Agregar</button>
+  </div>
 </div>
 
-<!-- MODAL CONFIGURACIÓN -->
-<div id="settingsModal" class="modal-overlay">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h3 class="modal-title-small"><i class="fas fa-gear"></i> Configuración</h3>
-            <button class="modal-close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="form-group">
-            <label>Tema de la aplicación</label>
-            <div class="theme-options">
-                <div class="theme-option active" onclick="setTheme('dark')" id="theme-dark"><div class="theme-preview theme-dark"></div>Oscuro</div>
-                <div class="theme-option" onclick="setTheme('light')" id="theme-light"><div class="theme-preview theme-light"></div>Claro</div>
-                <div class="theme-option" onclick="setTheme('emerald')" id="theme-emerald"><div class="theme-preview theme-emerald"></div>Esmeralda</div>
-            </div>
-        </div>
-        <div class="app-info">
-            <h4>Propinas Pro</h4>
-            <p>Sistema de gestión y reparto de propinas para quincenas.</p>
-            <p>Desarrollado con ❤️ para una administración eficiente.</p>
-            <span class="app-version">Versión 1.3.0</span>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL AGREGAR DÍA -->
-<div id="dayModal" class="modal-overlay">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h3 class="modal-title-small">Agregar día</h3>
-            <button class="modal-close" onclick="closeAddDayModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="form-group"><label>Fecha</label><input type="date" id="dayDate"></div>
-        <div class="form-group"><label>Monto de propina (S/)</label><input type="number" id="dayAmount" step="0.01" min="0" placeholder="0.00"></div>
-        <button class="btn-submit" onclick="addDay()"><i class="fas fa-plus"></i> Agregar</button>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    const SUPABASE_URL = 'https://amlqkpqubtkasdyzecyw.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtbHFrcHF1YnRrYXNkeXplY3l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNjU0NTUsImV4cCI6MjEwODk0MTQ1NX0.vUAZqFCdkeFckpLUahghdGt8TyuD8UIe9D0GprdT3yo';
+var staff=[],days=[],role=null;
+var PIN="2910";
+var DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
-    let supabase;
-    try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch (e) {
-        console.error("Error inicializando Supabase:", e);
-    }
+try{
+  var s=localStorage.getItem('propinas_data');
+  if(s){var d=JSON.parse(s);staff=d.staff||[];days=d.days||[];}
+}catch(e){}
 
-    const MASTER_PIN = "2910";
-    const VALID_DAYS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    
-    let currentRole = null, staff = [], days = [], startDate = '', isSaving = false, docId = null;
+// LOADER
+var p=0;
+var bar=document.getElementById('bar');
+var pct=document.getElementById('pct');
+var loader=document.getElementById('loader');
+var login=document.getElementById('login');
 
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('app-theme', theme);
-        document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
-        document.getElementById(`theme-${theme}`).classList.add('active');
-        const themeColors = { 'dark': '#0a0e1a', 'light': '#f8fafc', 'emerald': '#022c22' };
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColors[theme]);
-    }
+var t=setInterval(function(){
+  p+=Math.random()*5+2;
+  if(p>=100){
+    p=100;
+    clearInterval(t);
+    bar.style.width='100%';
+    pct.textContent='100%';
+    setTimeout(function(){
+      loader.style.display='none';
+      login.style.display='flex';
+    },500);
+  }else{
+    bar.style.width=p+'%';
+    pct.textContent=Math.floor(p)+'%';
+  }
+},60);
 
-    function loadTheme() {
-        const savedTheme = localStorage.getItem('app-theme') || 'dark';
-        setTheme(savedTheme);
-    }
+setTimeout(function(){
+  if(loader.style.display!=='none'){
+    clearInterval(t);
+    loader.style.display='none';
+    login.style.display='flex';
+  }
+},4000);
 
-    function openSettings() { document.getElementById('settingsModal').classList.add('active'); }
-    function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+function showPin(){
+  document.getElementById('roles').style.display='none';
+  document.getElementById('pinBox').classList.add('show');
+  document.getElementById('pin').focus();
+}
+function hidePin(){
+  document.getElementById('roles').style.display='block';
+  document.getElementById('pinBox').classList.remove('show');
+  document.getElementById('pin').value='';
+  document.getElementById('err').style.display='none';
+}
+function checkPin(){
+  if(document.getElementById('pin').value===PIN){enterApp('master');}
+  else{document.getElementById('err').style.display='block';document.getElementById('pin').value='';}
+}
+document.getElementById('pin').addEventListener('keypress',function(e){if(e.key==='Enter')checkPin();});
 
-    async function setupRealtime() {
-        if (!supabase) return;
-        updateSyncStatus('Conectando...', true);
-        await loadData();
-        supabase.channel('propinas_channel')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'propinas' }, () => loadData())
-            .subscribe((status) => {
-                if (status === 'SUBSCRIBED') updateSyncStatus('En tiempo real ✓', true);
-                else if (status === 'CHANNEL_ERROR') updateSyncStatus('Error de conexión', false);
-            });
-    }
+function enterApp(r){
+  role=r;
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  var b=document.getElementById('badge');
+  if(r==='master'){b.className='badge m';b.innerHTML='👑 Máster';}
+  else{b.className='badge c';b.innerHTML='👁 Usuario';}
+  render();
+}
 
-    async function loadData() {
-        try {
-            const { data, error } = await supabase.from('propinas').select('*').eq('key', 'quincena_actual').single();
-            if (error) { console.error('Error al cargar:', error); return; }
-            if (data) {
-                docId = data.id;
-                const appData = data.data || {};
-                staff = appData.staff || [];
-                days = appData.days || [];
-                startDate = appData.startDate || '';
-                document.getElementById('startDate').value = startDate;
-                if (document.getElementById('appContainer').style.display === 'block') renderAll();
-            }
-        } catch (err) { console.error('Error:', err); }
-    }
+function logout(){
+  role=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('login').style.display='flex';
+  hidePin();
+}
 
-    async function saveToSupabase() {
-        if (isSaving || !supabase) return;
-        isSaving = true;
-        updateSyncStatus('Guardando...', true);
-        const appData = { staff, days, startDate };
-        try {
-            if (docId) {
-                const { error } = await supabase.from('propinas').update({ data: appData, updated_at: new Date().toISOString() }).eq('id', docId);
-                if (error) throw error;
-            } else {
-                const { data, error } = await supabase.from('propinas').insert([{ key: 'quincena_actual', data: appData }]).select().single();
-                if (error) throw error;
-                docId = data.id;
-            }
-            updateSyncStatus('Guardado ✓', true);
-        } catch (error) {
-            console.error('Error al guardar:', error);
-            updateSyncStatus('Error al guardar', false);
-        }
-        isSaving = false;
-    }
+function addStaff(){
+  var n=document.getElementById('newStaff').value.trim();
+  if(!n)return;
+  if(staff.indexOf(n)!==-1){alert('Ya existe');return;}
+  staff.push(n);
+  days.forEach(function(d){d.att[n]='presente';});
+  document.getElementById('newStaff').value='';
+  save();render();
+}
+function rmStaff(n){
+  if(!confirm('¿Eliminar '+n+'?'))return;
+  staff=staff.filter(function(s){return s!==n;});
+  days.forEach(function(d){delete d.att[n];});
+  save();render();
+}
+function openDayModal(){document.getElementById('dayModal').classList.add('show');document.getElementById('dDate').value='';document.getElementById('dAmount').value='';}
+function closeDayModal(){document.getElementById('dayModal').classList.remove('show');}
+function addDay(){
+  var dt=document.getElementById('dDate').value;
+  var am=parseFloat(document.getElementById('dAmount').value);
+  if(!dt){alert('Fecha requerida');return;}
+  if(!am||am<0){alert('Monto inválido');return;}
+  var dow=new Date(dt+'T00:00:00').getDay();
+  if(dow===1){alert('No se permiten lunes');return;}
+  var exists=false;
+  days.forEach(function(d){if(d.date===dt)exists=true;});
+  if(exists){alert('Ya existe ese día');return;}
+  var att={};
+  staff.forEach(function(s){att[s]='presente';});
+  days.push({id:Date.now(),date:dt,name:DIAS[dow],amount:am,att:att});
+  days.sort(function(a,b){return a.date.localeCompare(b.date);});
+  closeDayModal();save();render();
+}
+function delDay(id){if(!confirm('¿Eliminar?'))return;days=days.filter(function(d){return d.id!==id;});save();render();}
+function updTip(id,v){var d=days.find(function(x){return x.id===id;});if(d){d.amount=parseFloat(v)||0;save();render();}}
+function cycleAtt(id,n){
+  var d=days.find(function(x){return x.id===id;});if(!d)return;
+  var c=d.att[n]||'presente';
+  d.att[n]=c==='presente'?'tarde':c==='tarde'?'permiso':'presente';
+  save();render();
+}
+function save(){try{localStorage.setItem('propinas_data',JSON.stringify({staff:staff,days:days}));}catch(e){}}
+function saveData(){save();alert('✓ Guardado');}
+function clearAll(){if(!confirm('¿Borrar todo?'))return;staff=[];days=[];save();render();}
 
-    function updateSyncStatus(text, connected) {
-        const status = document.getElementById('syncStatus');
-        const textEl = document.getElementById('syncText');
-        const dot = status.querySelector('.sync-dot');
-        status.style.display = 'flex';
-        textEl.textContent = text;
-        dot.style.background = connected ? 'var(--success)' : 'var(--danger)';
-        setTimeout(() => { status.style.display = 'none'; }, 3000);
-    }
+function calcDay(d){
+  var n=staff.length;
+  if(n===0)return{pp:0,pozo:d.amount,p:0};
+  var pp=d.amount/n;
+  var p=0;
+  staff.forEach(function(s){if(d.att[s]==='presente')p++;});
+  return{pp:pp,pozo:d.amount-pp*p,p:p};
+}
+function calcPerson(nm){
+  var t=0,w=0,no=[];
+  days.forEach(function(d){
+    if(d.att[nm]==='presente'){t+=calcDay(d).pp;w++;}
+    else{no.push(d.name.substring(0,3)+' '+fmtDate(d.date));}
+  });
+  return{t:t,w:w,no:no};
+}
+function calcPozo(){var t=0;days.forEach(function(d){t+=calcDay(d).pozo;});return t;}
+function calcTotal(){var s=0;days.forEach(function(d){s+=d.amount;});return s;}
+function fmtDate(s){var d=new Date(s+'T00:00:00');return d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0');}
 
-    // === LOADER A PRUEBA DE FALLOS ===
-    document.addEventListener('DOMContentLoaded', () => {
-        loadTheme();
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const loaderOverlay = document.getElementById('loaderOverlay');
-        const loginOverlay = document.getElementById('loginOverlay');
-
-        if (!progressBar || !progressText) {
-            loaderOverlay.classList.add('hidden');
-            loginOverlay.classList.add('active');
-            setupRealtime();
-            return;
-        }
-        
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 5 + 2; 
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                progressBar.style.width = '100%';
-                progressText.textContent = '100%';
-                setTimeout(() => {
-                    loaderOverlay.classList.add('hidden');
-                    setTimeout(() => {
-                        loginOverlay.classList.add('active');
-                        setupRealtime(); 
-                    }, 300);
-                }, 500);
-            } else {
-                progressBar.style.width = progress + '%';
-                progressText.textContent = Math.floor(progress) + '%';
-            }
-        }, 50);
-
-        // FALLBACK DE SEGURIDAD: Fuerza la aparición del login a los 4 segundos
-        setTimeout(() => {
-            if (!loaderOverlay.classList.contains('hidden')) {
-                clearInterval(interval);
-                loaderOverlay.classList.add('hidden');
-                loginOverlay.classList.add('active');
-                setupRealtime();
-            }
-        }, 4000);
+function render(){
+  document.getElementById('pozo').textContent='S/ '+calcPozo().toFixed(2);
+  document.getElementById('total').textContent='S/ '+calcTotal().toFixed(2);
+  document.getElementById('nDays').textContent=days.length;
+  document.getElementById('nStaff').textContent=staff.length;
+  
+  var sg=document.getElementById('staffGrid');
+  if(staff.length===0){sg.innerHTML='<p style="color:#8b95a5;text-align:center;padding:1rem;font-size:.85rem">Sin personal</p>';}
+  else{
+    var html='';
+    staff.forEach(function(n){
+      html+='<div class="chip"><div class="av">'+n[0].toUpperCase()+'</div><div class="nm">'+n+'</div><button class="rm" onclick="rmStaff(\''+n+'\')">✕</button></div>';
     });
-
-    function showPinInput() {
-        document.getElementById('roleSelector').classList.add('hidden');
-        document.getElementById('pinArea').classList.add('active');
-        setTimeout(() => document.getElementById('masterPin').focus(), 100);
-    }
-    function backToRoles() {
-        document.getElementById('roleSelector').classList.remove('hidden');
-        document.getElementById('pinArea').classList.remove('active');
-        document.getElementById('masterPin').value = '';
-        document.getElementById('errorMsg').style.display = 'none';
-    }
-    function handleEnter(event) { if (event.key === 'Enter') verifyPin(); }
-    function verifyPin() {
-        const pin = document.getElementById('masterPin').value;
-        if (pin === MASTER_PIN) { currentRole = 'master'; enterApp(); } 
-        else {
-            document.getElementById('errorMsg').style.display = 'block';
-            const input = document.getElementById('masterPin');
-            input.value = '';
-            input.style.animation = 'shake 0.4s';
-            setTimeout(() => input.style.animation = '', 400);
-        }
-    }
-    function loginAsClient() { currentRole = 'client'; enterApp(); }
-    function enterApp() {
-        document.getElementById('loginOverlay').classList.remove('active');
-        document.getElementById('appContainer').style.display = 'block';
-        const badge = document.getElementById('userBadge');
-        if (currentRole === 'master') {
-            badge.className = 'user-badge master';
-            badge.innerHTML = '<i class="fas fa-crown"></i> Máster';
-            document.body.classList.remove('read-only');
-        } else {
-            badge.className = 'user-badge client';
-            badge.innerHTML = '<i class="fas fa-eye"></i> Usuario';
-            document.body.classList.add('read-only');
-        }
-        renderAll();
-    }
-    function logout() {
-        currentRole = null;
-        document.getElementById('appContainer').style.display = 'none';
-        document.getElementById('loginOverlay').classList.add('active');
-        backToRoles();
-    }
-    function openAddDayModal() {
-        document.getElementById('dayModal').classList.add('active');
-        document.getElementById('dayDate').value = '';
-        document.getElementById('dayAmount').value = '';
-    }
-    function closeAddDayModal() { document.getElementById('dayModal').classList.remove('active'); }
-    function addDay() {
-        const dateInput = document.getElementById('dayDate').value;
-        const amountInput = document.getElementById('dayAmount').value;
-        if (!dateInput) { alert('Selecciona una fecha'); return; }
-        if (!amountInput || parseFloat(amountInput) < 0) { alert('Ingresa un monto válido'); return; }
-        const dateObj = new Date(dateInput + 'T00:00:00');
-        const dayOfWeek = dateObj.getDay();
-        if (dayOfWeek === 1) { alert('Solo se permiten días de martes a domingo (no lunes)'); return; }
-        const dayName = VALID_DAYS[dayOfWeek];
-        const amount = parseFloat(amountInput);
-        if (days.some(d => d.date === dateInput)) { alert('Ya existe un día con esa fecha'); return; }
-        const attendance = {};
-        staff.forEach(s => attendance[s] = 'presente');
-        days.push({ id: Date.now(), date: dateInput, dayName, amount, attendance });
-        days.sort((a, b) => new Date(a.date) - new Date(b.date));
-        closeAddDayModal();
-        saveToSupabase();
-    }
-    function deleteDay(id) {
-        if (!confirm('¿Eliminar este día?')) return;
-        days = days.filter(d => d.id !== id);
-        saveToSupabase();
-    }
-    function updateTip(id, value) {
-        const day = days.find(d => d.id === id);
-        if (day) { day.amount = parseFloat(value) || 0; saveToSupabase(); }
-    }
-    function cycleAttendance(dayId, name) {
-        const day = days.find(d => d.id === dayId);
-        if (!day) return;
-        const current = day.attendance[name] || 'presente';
-        if (current === 'presente') day.attendance[name] = 'tarde';
-        else if (current === 'tarde') day.attendance[name] = 'permiso';
-        else day.attendance[name] = 'presente';
-        saveToSupabase();
-    }
-    function addStaff() {
-        const input = document.getElementById('staffNameInput');
-        const name = input.value.trim();
-        if (!name) return;
-        if (staff.includes(name)) { alert('Ya está registrado'); return; }
-        staff.push(name);
-        days.forEach(d => d.attendance[name] = 'presente');
-        input.value = '';
-        saveToSupabase();
-    }
-    function removeStaff(name) {
-        if (!confirm(`¿Eliminar a ${name}?`)) return;
-        staff = staff.filter(s => s !== name);
-        days.forEach(d => delete d.attendance[name]);
-        saveToSupabase();
-    }
-    function calcDayDistribution(day) {
-        const totalStaff = staff.length;
-        if (totalStaff === 0) return { perPerson: 0, toPozo: day.amount, presentes: 0 };
-        const perPerson = day.amount / totalStaff;
-        const presentes = staff.filter(s => day.attendance[s] === 'presente').length;
-        const distributed = perPerson * presentes;
-        const toPozo = day.amount - distributed;
-        return { perPerson, toPozo, presentes };
-    }
-    function calcPersonTotal(name) {
-        let total = 0, daysWorked = 0, noWorkDays = [];
-        days.forEach((day) => {
-            if (day.attendance[name] === 'presente') {
-                total += calcDayDistribution(day).perPerson;
-                daysWorked++;
-            } else {
-                noWorkDays.push(day.dayName.substring(0, 3) + ' ' + formatDate(day.date));
-            }
-        });
-        return { total, daysWorked, noWorkDays };
-    }
-    function calcPozo() {
-        let total = 0;
-        days.forEach(day => { total += calcDayDistribution(day).toPozo; });
-        return total;
-    }
-    function calcTotalAmount() { return days.reduce((sum, day) => sum + day.amount, 0); }
-    function renderAll() { renderStats(); renderStaff(); renderDays(); renderSummary(); }
-    function renderStats() {
-        document.getElementById('pozoAmount').textContent = `S/ ${calcPozo().toFixed(2)}`;
-        document.getElementById('totalAmount').textContent = `S/ ${calcTotalAmount().toFixed(2)}`;
-        document.getElementById('statDays').textContent = days.length;
-        document.getElementById('statStaff').textContent = staff.length;
-    }
-    function renderStaff() {
-        const grid = document.getElementById('staffGrid');
-        if (staff.length === 0) {
-            grid.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 0.8rem;">Aún no hay personal registrado.</p>';
-            return;
-        }
-        grid.innerHTML = staff.map(name => `
-            <div class="staff-chip">
-                <div class="staff-avatar">${name.charAt(0).toUpperCase()}</div>
-                <div class="staff-name">${name}</div>
-                <button class="staff-remove editable-action" onclick="removeStaff('${name}')"><i class="fas fa-times"></i></button>
-            </div>
-        `).join('');
-    }
-    function renderDays() {
-        const thead = document.querySelector('#daysTable thead tr');
-        const tbody = document.getElementById('daysTableBody');
-        const today = new Date().toISOString().split('T')[0];
-        let headerHTML = '<th>Día</th><th>Propina</th><th>Acción</th>';
-        staff.forEach(name => { headerHTML += `<th>${name.substring(0, 4).toUpperCase()}</th>`; });
-        thead.innerHTML = headerHTML;
-        if (days.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="${3 + staff.length}" style="text-align: center; color: var(--text-muted); padding: 1.5rem;"><i class="fas fa-calendar-plus" style="font-size: 1.5rem; margin-bottom: 0.4rem; display: block;"></i>No hay días registrados. Haz clic en "Agregar día".</td></tr>`;
-            return;
-        }
-        tbody.innerHTML = days.map((day) => {
-            const isToday = day.date === today;
-            return `
-                <tr class="${isToday ? 'today' : ''}">
-                    <td><div class="day-info"><div class="day-name">${day.dayName}</div><div class="day-date">${formatDate(day.date)}</div></div></td>
-                    <td><input type="number" class="tip-input editable-action" value="${day.amount}" onchange="updateTip(${day.id}, this.value)" step="0.01" min="0"></td>
-                    <td><button class="delete-day-btn editable-action" onclick="deleteDay(${day.id})"><i class="fas fa-trash"></i></button></td>
-                    ${staff.map(name => {
-                        const status = day.attendance[name] || 'presente';
-                        let icon = '<i class="fas fa-check" style="font-size: 0.8rem;"></i>';
-                        if (status === 'tarde') icon = '<i class="fas fa-clock" style="font-size: 0.8rem;"></i>';
-                        if (status === 'permiso') icon = '<i class="fas fa-file-alt" style="font-size: 0.8rem;"></i>';
-                        return `<td><div class="att-cell ${status} editable-action" onclick="cycleAttendance(${day.id}, '${name}')">${icon}</div></td>`;
-                    }).join('')}
-                </tr>
-            `;
-        }).join('');
-    }
-    function renderSummary() {
-        const tbody = document.getElementById('summaryTableBody');
-        if (staff.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Aún no hay personal registrado.</td></tr>';
-            return;
-        }
-        tbody.innerHTML = staff.map(name => {
-            const { total, daysWorked, noWorkDays } = calcPersonTotal(name);
-            return `
-                <tr>
-                    <td><div class="person-cell"><div class="staff-avatar">${name.charAt(0).toUpperCase()}</div><span>${name}</span></div></td>
-                    <td>${daysWorked}</td>
-                    <td class="amount">S/ ${total.toFixed(2)}</td>
-                    <td class="no-work-days">${noWorkDays.join(', ') || '—'}</td>
-                </tr>
-            `;
-        }).join('');
-    }
-    function formatDate(dateStr) {
-        const d = new Date(dateStr + 'T00:00:00');
-        return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
-    }
-    function applyStartDate() {
-        const newStart = document.getElementById('startDate').value;
-        if (!newStart) return;
-        if (days.length === 0) { startDate = newStart; saveToSupabase(); return; }
-        const oldStart = days[0].date;
-        const diff = Math.floor((new Date(newStart) - new Date(oldStart)) / (1000 * 60 * 60 * 24));
-        days.forEach(day => {
-            const d = new Date(day.date + 'T00:00:00');
-            d.setDate(d.getDate() + diff);
-            day.date = d.toISOString().split('T')[0];
-            day.dayName = VALID_DAYS[d.getDay()];
-        });
-        days.sort((a, b) => new Date(a.date) - new Date(b.date));
-        startDate = newStart;
-        saveToSupabase();
-    }
-    function saveData() { saveToSupabase(); }
-    function clearQuincena() { if (!confirm('¿Vaciar toda la quincena?')) return; days = []; startDate = ''; saveToSupabase(); }
-    function resetAll() { if (!confirm('¿Resetear TODO? Se perderán todos los datos.')) return; staff = []; days = []; startDate = ''; saveToSupabase(); }
-    document.getElementById('dayModal').addEventListener('click', (e) => { if (e.target === document.getElementById('dayModal')) closeAddDayModal(); });
-    document.getElementById('settingsModal').addEventListener('click', (e) => { if (e.target === document.getElementById('settingsModal')) closeSettings(); });
+    sg.innerHTML=html;
+  }
+  
+  var head=document.getElementById('dayHead');
+  var body=document.getElementById('dayBody');
+  var today=new Date().toISOString().split('T')[0];
+  var h='<th>Día</th><th>Propina</th><th>Acción</th>';
+  staff.forEach(function(n){h+='<th>'+n.substring(0,4).toUpperCase()+'</th>';});
+  head.innerHTML=h;
+  
+  if(days.length===0){
+    body.innerHTML='<tr><td colspan="'+(3+staff.length)+'" style="text-align:center;color:#8b95a5;padding:1.5rem">Sin días. Agrega uno.</td></tr>';
+  }else{
+    var html='';
+    days.forEach(function(d){
+      var isT=d.date===today;
+      html+='<tr class="'+(isT?'today':'')+'">';
+      html+='<td><div class="dn">'+d.name+'</div><div class="dd">'+fmtDate(d.date)+'</div></td>';
+      html+='<td><input type="number" class="ti" value="'+d.amount+'" onchange="updTip('+d.id+',this.value)" step="0.01"></td>';
+      html+='<td><button class="db" onclick="delDay('+d.id+')">🗑</button></td>';
+      staff.forEach(function(n){
+        var s=d.att[n]||'presente';
+        var ic=s==='presente'?'✔':s==='tarde'?'⏰':'📝';
+        var cls=s==='presente'?'p':s==='tarde'?'t':'m';
+        html+='<td><div class="att '+cls+'" onclick="cycleAtt('+d.id+',\''+n+'\')">'+ic+'</div></td>';
+      });
+      html+='</tr>';
+    });
+    body.innerHTML=html;
+  }
+  
+  var sb=document.getElementById('sumBody');
+  if(staff.length===0){sb.innerHTML='<tr><td colspan="4" style="text-align:center;color:#8b95a5;padding:1.5rem">Sin personal</td></tr>';}
+  else{
+    var html='';
+    staff.forEach(function(n){
+      var r=calcPerson(n);
+      html+='<tr><td><div style="display:flex;align-items:center;gap:.6rem"><div class="av">'+n[0].toUpperCase()+'</div><span>'+n+'</span></div></td><td>'+r.w+'</td><td class="amt">S/ '+r.t.toFixed(2)+'</td><td style="font-size:.7rem;color:#8b95a5;font-style:italic">'+(r.no.join(', ')||'—')+'</td></tr>';
+    });
+    sb.innerHTML=html;
+  }
+}
 </script>
 </body>
 </html>
