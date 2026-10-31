@@ -19,63 +19,28 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;transition:background .3s,color .3s,border-color .3s}
 body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* ============ LOADER COMPACTO ELEGANTE ============ */
-#loader{
-  position:fixed;inset:0;
-  background:radial-gradient(ellipse at 50% 40%, rgba(30,50,90,0.5) 0%, transparent 60%),
-             radial-gradient(ellipse at 50% 100%, rgba(201,169,97,0.06) 0%, transparent 50%),
-             linear-gradient(180deg, #0a1628 0%, #06101f 50%, #040a14 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:9999;transition:opacity .8s ease;overflow:hidden;
-}
+/* LOADER */
+#loader{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(30,50,90,0.5) 0%,transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(201,169,97,0.06) 0%,transparent 50%),linear-gradient(180deg,#0a1628 0%,#06101f 50%,#040a14 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .8s ease;overflow:hidden}
 #loader.hide{opacity:0;pointer-events:none}
-
-.loader-logo-wrap{
-  position:relative;
-  width:110px;height:110px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:1.5rem;
-}
-.loader-logo{
-  width:75px;height:75px;
-  background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 50%,var(--gold-d) 100%);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;color:var(--bg);
-  box-shadow:0 10px 30px rgba(201,169,97,0.4);
-  animation:logoPulse 2s ease-in-out infinite;
-  position:relative;z-index:2;
-}
+.loader-logo-wrap{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+.loader-logo{width:75px;height:75px;background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 50%,var(--gold-d) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:var(--bg);box-shadow:0 10px 30px rgba(201,169,97,0.4);animation:logoPulse 2s ease-in-out infinite;position:relative;z-index:2}
 @keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .ring,.ring2{position:absolute;border-radius:50%;border:2px solid transparent;animation:spin linear infinite}
 .ring{inset:0;border-top-color:var(--gold);border-right-color:var(--gold-l);animation-duration:1.2s}
 .ring2{inset:10px;border-bottom-color:var(--gold);border-left-color:var(--gold-d);animation-duration:1.8s;animation-direction:reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-.l-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.8rem;
-  font-weight:600;
-  background:linear-gradient(135deg,#fff,var(--gold-l));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  margin-bottom:.4rem;
-  letter-spacing:-.5px;
-}
-.l-sub{
-  color:var(--gold);
-  font-size:.75rem;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-bottom:1.5rem;
-  font-weight:500;
-}
+.l-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;background:linear-gradient(135deg,#fff,var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem;letter-spacing:-.5px}
+.l-sub{color:var(--gold);font-size:.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem;font-weight:500}
 .l-bar-wrap{width:220px;max-width:80%;display:flex;flex-direction:column;align-items:center}
 .l-bar{width:100%;height:3px;background:var(--border);border-radius:3px;overflow:hidden}
 .l-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold-l));width:0%;transition:width .15s;box-shadow:0 0 10px var(--gold)}
 .l-pct{color:var(--gold);font-size:.95rem;margin-top:.7rem;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:1px}
+.sync-badge{position:fixed;top:10px;right:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.4rem .8rem;font-size:.7rem;color:var(--text2);display:none;align-items:center;gap:.4rem;z-index:500}
+.sync-badge.show{display:flex}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse2 2s infinite}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* ============ LOGIN ============ */
+/* LOGIN */
 #login{position:fixed;inset:0;background:rgba(10,14,26,0.97);backdrop-filter:blur(30px);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
 #login.show{display:flex;animation:fadeIn .6s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -101,7 +66,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .back-btn:hover{color:var(--gold)}
 .err{color:var(--red);font-size:.8rem;margin-bottom:.8rem;display:none}
 
-/* ============ APP ============ */
+/* APP */
 #app{display:none;max-width:1100px;margin:0 auto;padding:1.5rem 1.2rem}
 #app.show{display:block;animation:fadeIn .5s}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:1rem}
@@ -193,61 +158,17 @@ tr.today td:first-child::after{content:' ●';color:var(--gold);font-size:.5rem}
 
 body.read-only .master-only{display:none !important}
 
-@media(max-width:769px){
-  .loader-logo-wrap{width:100px;height:100px}
-  .loader-logo{width:65px;height:65px;font-size:1.6rem}
-  .l-title{font-size:1.6rem}
-  .stats{grid-template-columns:repeat(2,1fr);gap:.3rem}
-  .stat{padding:.8rem}.stat-v{font-size:1.3rem}.section{padding:1rem}
-}
-@media(max-width:480px){
-  .loader-logo-wrap{width:90px;height:90px}
-  .loader-logo{width:60px;height:60px;font-size:1.5rem}
-  .l-title{font-size:1.5rem}
-  .l-sub{font-size:.65rem;letter-spacing:2px}
-  #app{padding:1rem .8rem}
-  .header{flex-direction:column;align-items:flex-start;gap:.8rem}
-  .h-right{width:100%;justify-content:space-between}
-  .h-title{font-size:1.3rem}
-  .stats{gap:.25rem;margin-bottom:1rem}
-  .stat{padding:.7rem .6rem}.stat-v{font-size:1.2rem}.stat-l{font-size:.55rem;letter-spacing:1px}
-  .section{padding:.9rem;margin-bottom:.8rem}
-  .in-row{flex-direction:column}.in-row button{width:100%}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
-  .sec-h{flex-direction:column;align-items:flex-start}
-  .add-btn{width:100%}
-  .acts{flex-direction:column}.sv,.dg{min-width:100%}
-}
-@media(max-width:375px){
-  .loader-logo-wrap{width:80px;height:80px}
-  .loader-logo{width:55px;height:55px;font-size:1.3rem}
-  .l-title{font-size:1.4rem}
-  .h-title{font-size:1.1rem}.h-logo{width:34px;height:34px;font-size:.95rem}
-  .stat-v{font-size:1.1rem}.section{padding:.8rem}.grid{grid-template-columns:1fr}
-}
-@media(max-width:250px){
-  .loader-logo-wrap{width:70px;height:70px}
-  .loader-logo{width:48px;height:48px;font-size:1.1rem}
-  .l-title{font-size:1.2rem}.l-sub{font-size:.55rem;letter-spacing:2px}
-  #app{padding:.5rem .4rem}
-  .stats{gap:.2rem}.stat{padding:.5rem .4rem;border-radius:8px}
-  .stat-v{font-size:.95rem}.stat-l{font-size:.45rem;letter-spacing:.5px;margin-bottom:.15rem}
-  .section{padding:.6rem;margin-bottom:.6rem;border-radius:10px}
-  .sec-h{margin-bottom:.6rem;padding-bottom:.5rem}
-  .sec-h-l::before{height:14px}.sec-t{font-size:.6rem}
-  table th,table td{padding:.4rem;font-size:.6rem}
-  .att{width:28px;height:28px;font-size:.7rem}
-  .ti{padding:.3rem .4rem;font-size:.7rem}
-}
+@media(max-width:769px){.loader-logo-wrap{width:100px;height:100px}.loader-logo{width:65px;height:65px;font-size:1.6rem}.l-title{font-size:1.6rem}.stats{grid-template-columns:repeat(2,1fr);gap:.3rem}.stat{padding:.8rem}.stat-v{font-size:1.3rem}.section{padding:1rem}}
+@media(max-width:480px){.loader-logo-wrap{width:90px;height:90px}.loader-logo{width:60px;height:60px;font-size:1.5rem}.l-title{font-size:1.5rem}.l-sub{font-size:.65rem;letter-spacing:2px}#app{padding:1rem .8rem}.header{flex-direction:column;align-items:flex-start;gap:.8rem}.h-right{width:100%;justify-content:space-between}.h-title{font-size:1.3rem}.stats{gap:.25rem;margin-bottom:1rem}.stat{padding:.7rem .6rem}.stat-v{font-size:1.2rem}.stat-l{font-size:.55rem;letter-spacing:1px}.section{padding:.9rem;margin-bottom:.8rem}.in-row{flex-direction:column}.in-row button{width:100%}.grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.sec-h{flex-direction:column;align-items:flex-start}.add-btn{width:100%}.acts{flex-direction:column}.sv,.dg{min-width:100%}}
+@media(max-width:375px){.loader-logo-wrap{width:80px;height:80px}.loader-logo{width:55px;height:55px;font-size:1.3rem}.l-title{font-size:1.4rem}.h-title{font-size:1.1rem}.h-logo{width:34px;height:34px;font-size:.95rem}.stat-v{font-size:1.1rem}.section{padding:.8rem}.grid{grid-template-columns:1fr}}
+@media(max-width:250px){.loader-logo-wrap{width:70px;height:70px}.loader-logo{width:48px;height:48px;font-size:1.1rem}.l-title{font-size:1.2rem}.l-sub{font-size:.55rem;letter-spacing:2px}#app{padding:.5rem .4rem}.stats{gap:.2rem}.stat{padding:.5rem .4rem;border-radius:8px}.stat-v{font-size:.95rem}.stat-l{font-size:.45rem;letter-spacing:.5px;margin-bottom:.15rem}.section{padding:.6rem;margin-bottom:.6rem;border-radius:10px}.sec-h{margin-bottom:.6rem;padding-bottom:.5rem}.sec-h-l::before{height:14px}.sec-t{font-size:.6rem}table th,table td{padding:.4rem;font-size:.6rem}.att{width:28px;height:28px;font-size:.7rem}.ti{padding:.3rem .4rem;font-size:.7rem}}
 </style>
 </head>
 <body>
 
-<!-- LOADER COMPACTO -->
 <div id="loader">
   <div class="loader-logo-wrap">
-    <div class="ring"></div>
-    <div class="ring2"></div>
+    <div class="ring"></div><div class="ring2"></div>
     <div class="loader-logo"><i class="fas fa-coins"></i></div>
   </div>
   <div class="l-title">Propinas</div>
@@ -258,7 +179,8 @@ body.read-only .master-only{display:none !important}
   </div>
 </div>
 
-<!-- LOGIN -->
+<div id="syncBadge" class="sync-badge"><div class="sync-dot"></div><span id="syncText">Sincronizando...</span></div>
+
 <div id="login">
   <div class="login-box">
     <div class="login-logo"><i class="fas fa-coins"></i></div>
@@ -283,20 +205,16 @@ body.read-only .master-only{display:none !important}
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="header">
     <div class="h-left">
       <div class="h-logo-row">
         <div class="h-logo"><i class="fas fa-coins"></i></div>
-        <div>
-          <div class="h-title">Propinas por quincena</div>
-          <div class="h-sub">Martes a domingo · cierre cada 15 días</div>
-        </div>
+        <div><div class="h-title">Propinas por quincena</div><div class="h-sub">Martes a domingo · cierre cada 15 días</div></div>
       </div>
     </div>
     <div class="h-right">
-      <button class="icon-btn master-only" onclick="openSettings()" title="Configuración"><i class="fas fa-gear"></i></button>
+      <button class="icon-btn master-only" onclick="openSettings()"><i class="fas fa-gear"></i></button>
       <div class="badge" id="badge"></div>
       <button class="out-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</button>
     </div>
@@ -311,10 +229,7 @@ body.read-only .master-only{display:none !important}
 
   <div class="section">
     <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Personal</div></div></div>
-    <div class="in-row master-only">
-      <input type="text" id="newStaff" placeholder="Nombre">
-      <button onclick="addStaff()">Agregar</button>
-    </div>
+    <div class="in-row master-only"><input type="text" id="newStaff" placeholder="Nombre"><button onclick="addStaff()">Agregar</button></div>
     <div class="grid" id="staffGrid"></div>
   </div>
 
@@ -323,72 +238,107 @@ body.read-only .master-only{display:none !important}
       <div class="sec-h-l"><div class="sec-t">Asistencia y propinas</div></div>
       <button class="add-btn master-only" onclick="openDayModal()"><i class="fas fa-plus"></i> Agregar día</button>
     </div>
-    <div class="tabs">
-      <div class="tab p"><i class="fas fa-check"></i> Presente</div>
-      <div class="tab t"><i class="fas fa-clock"></i> Tarde</div>
-      <div class="tab m"><i class="fas fa-file-alt"></i> Permiso</div>
-    </div>
-    <div class="tw">
-      <table><thead><tr id="dayHead"><th>Día</th><th>Propina</th><th class="master-only">Acción</th></tr></thead>
-      <tbody id="dayBody"></tbody></table>
-    </div>
+    <div class="tabs"><div class="tab p"><i class="fas fa-check"></i> Presente</div><div class="tab t"><i class="fas fa-clock"></i> Tarde</div><div class="tab m"><i class="fas fa-file-alt"></i> Permiso</div></div>
+    <div class="tw"><table><thead><tr id="dayHead"><th>Día</th><th>Propina</th><th class="master-only">Acción</th></tr></thead><tbody id="dayBody"></tbody></table></div>
     <div class="hint">Toca una celda para cambiar. Tarde y permiso no reciben ese día → va al pozo.</div>
   </div>
 
   <div class="section">
     <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Resumen del reparto</div></div></div>
-    <div class="tw">
-      <table><thead><tr><th>Persona</th><th>Días</th><th>Recibe</th><th>Sin recibir</th></tr></thead>
-      <tbody id="sumBody"></tbody></table>
-    </div>
+    <div class="tw"><table><thead><tr><th>Persona</th><th>Días</th><th>Recibe</th><th>Sin recibir</th></tr></thead><tbody id="sumBody"></tbody></table></div>
   </div>
 
   <div class="section master-only">
     <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Datos</div></div></div>
-    <div class="acts">
-      <button class="sv" onclick="saveData()"><i class="fas fa-save"></i> Guardar</button>
-      <button class="dg" onclick="clearAll()">Vaciar quincena</button>
-    </div>
+    <div class="acts"><button class="sv" onclick="saveData()"><i class="fas fa-save"></i> Guardar en la nube</button><button class="dg" onclick="clearAll()">Vaciar quincena</button></div>
     <button class="dg full" onclick="resetAll()">Resetear todo</button>
   </div>
 </div>
 
-<!-- MODAL DÍA -->
 <div class="modal" id="dayModal">
   <div class="m-box">
-    <div class="m-h">
-      <h3>Agregar día</h3>
-      <button class="m-x" onclick="closeDayModal()"><i class="fas fa-times"></i></button>
-    </div>
+    <div class="m-h"><h3>Agregar día</h3><button class="m-x" onclick="closeDayModal()"><i class="fas fa-times"></i></button></div>
     <div class="fg"><label>Fecha</label><input type="date" id="dDate"></div>
     <div class="fg"><label>Monto de propina (S/)</label><input type="number" id="dAmount" step="0.01" min="0" placeholder="0.00"></div>
     <button class="gold-btn" onclick="addDay()"><i class="fas fa-plus"></i> Agregar</button>
   </div>
 </div>
 
-<!-- MODAL CONFIG -->
 <div class="modal" id="settingsModal">
   <div class="m-box">
-    <div class="m-h">
-      <h3><i class="fas fa-gear"></i> Configuración</h3>
-      <button class="m-x" onclick="closeSettings()"><i class="fas fa-times"></i></button>
-    </div>
+    <div class="m-h"><h3><i class="fas fa-gear"></i> Configuración</h3><button class="m-x" onclick="closeSettings()"><i class="fas fa-times"></i></button></div>
     <div style="text-align:center;padding:1rem;background:var(--bg2);border-radius:10px">
       <h4 style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:.3rem">Propinas Pro</h4>
       <p style="font-size:.75rem;color:var(--text2);line-height:1.5;margin-bottom:.5rem">Sistema de gestión y reparto de propinas para quincenas.</p>
       <p style="font-size:.7rem;color:var(--text2)">Desarrollado con ❤️ para una administración eficiente.</p>
-      <div style="display:inline-block;background:var(--gold-s);color:var(--gold);padding:.2rem .6rem;border-radius:20px;font-size:.65rem;font-weight:600;margin-top:.5rem">Versión 1.5.0</div>
+      <div style="display:inline-block;background:var(--gold-s);color:var(--gold);padding:.2rem .6rem;border-radius:20px;font-size:.65rem;font-weight:600;margin-top:.5rem">Versión 2.0.0 · Cloud</div>
     </div>
   </div>
 </div>
 
 <script>
+// ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS DE JSONBIN.IO
+const BIN_ID = '6ae60338ffd5d160539b7100';
+const API_KEY='$2a$10$Xii1aCLZX.deaWbuQoaT5etZVFP8brUPtjmWe1CZimzAKrMyRWDg2';
+const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
 var staff=[],days=[],role=null;
 var PIN="2910";
 var DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+var isSaving=false;
 
-try{var s=localStorage.getItem('propinas_data');if(s){var d=JSON.parse(s);staff=d.staff||[];days=d.days||[];}}catch(e){}
+// Cargar datos desde JSONBin
+async function loadFromCloud(){
+  showSync('Conectando...',true);
+  try{
+    const res=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    if(!res.ok)throw new Error('Error al cargar');
+    const data=await res.json();
+    const record=data.record||{};
+    staff=record.staff||[];
+    days=record.days||[];
+    showSync('Sincronizado ✓',true);
+  }catch(e){
+    console.error('Error al cargar:',e);
+    showSync('Error de conexión',false);
+    // Fallback: cargar de localStorage
+    try{var s=localStorage.getItem('propinas_data');if(s){var d=JSON.parse(s);staff=d.staff||[];days=d.days||[];}}catch(e2){}
+  }
+}
 
+// Guardar datos en JSONBin
+async function saveToCloud(){
+  if(isSaving)return;
+  isSaving=true;
+  showSync('Guardando...',true);
+  try{
+    const res=await fetch(BIN_URL,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
+      body:JSON.stringify({staff:staff,days:days})
+    });
+    if(!res.ok)throw new Error('Error al guardar');
+    showSync('Guardado en la nube ✓',true);
+    // También guardar en localStorage como backup
+    try{localStorage.setItem('propinas_data',JSON.stringify({staff:staff,days:days}));}catch(e){}
+  }catch(e){
+    console.error('Error al guardar:',e);
+    showSync('Error al guardar',false);
+  }
+  isSaving=false;
+}
+
+function showSync(text,ok){
+  const badge=document.getElementById('syncBadge');
+  const txt=document.getElementById('syncText');
+  const dot=badge.querySelector('.sync-dot');
+  badge.classList.add('show');
+  txt.textContent=text;
+  dot.style.background=ok?'var(--green)':'var(--red)';
+  setTimeout(()=>{badge.classList.remove('show');},3000);
+}
+
+// LOADER
 (function(){
   var bar=document.getElementById('bar');
   var pct=document.getElementById('pct');
@@ -415,6 +365,9 @@ try{var s=localStorage.getItem('propinas_data');if(s){var d=JSON.parse(s);staff=
   },5000);
 })();
 
+// Cargar datos al iniciar
+loadFromCloud();
+
 function showPin(){document.getElementById('roles').style.display='none';document.getElementById('pinArea').classList.add('show');document.getElementById('pin').focus();}
 function hidePin(){document.getElementById('roles').style.display='block';document.getElementById('pinArea').classList.remove('show');document.getElementById('pin').value='';document.getElementById('err').style.display='none';}
 function checkPin(){
@@ -439,16 +392,15 @@ function closeSettings(){document.getElementById('settingsModal').classList.remo
 function openDayModal(){if(role!=='master'){alert('Solo el máster puede agregar días');return;}document.getElementById('dayModal').classList.add('show');document.getElementById('dDate').value='';document.getElementById('dAmount').value='';}
 function closeDayModal(){document.getElementById('dayModal').classList.remove('show');}
 
-function addStaff(){if(role!=='master'){alert('Solo el máster puede agregar personal');return;}var n=document.getElementById('newStaff').value.trim();if(!n)return;if(staff.indexOf(n)!==-1){alert('Ya está registrado');return;}staff.push(n);days.forEach(function(d){d.att[n]='presente';});document.getElementById('newStaff').value='';save();render();}
-function rmStaff(n){if(role!=='master'){alert('Solo el máster puede eliminar personal');return;}if(!confirm('¿Eliminar a '+n+'?'))return;staff=staff.filter(function(s){return s!==n;});days.forEach(function(d){delete d.att[n];});save();render();}
-function addDay(){if(role!=='master'){alert('Solo el máster puede agregar días');return;}var dt=document.getElementById('dDate').value;var am=parseFloat(document.getElementById('dAmount').value);if(!dt){alert('Selecciona una fecha');return;}if(!am||am<0){alert('Ingresa un monto válido');return;}var dow=new Date(dt+'T00:00:00').getDay();if(dow===1){alert('Solo se permiten días de martes a domingo (no lunes)');return;}var exists=false;days.forEach(function(d){if(d.date===dt)exists=true;});if(exists){alert('Ya existe un día con esa fecha');return;}var att={};staff.forEach(function(s){att[s]='presente';});days.push({id:Date.now(),date:dt,name:DIAS[dow],amount:am,att:att});days.sort(function(a,b){return a.date.localeCompare(b.date);});closeDayModal();save();render();}
-function delDay(id){if(role!=='master'){alert('Solo el máster puede eliminar días');return;}if(!confirm('¿Eliminar este día?'))return;days=days.filter(function(d){return d.id!==id;});save();render();}
-function updTip(id,v){if(role!=='master'){alert('Solo el máster puede editar montos');return;}var d=days.find(function(x){return x.id===id;});if(d){d.amount=parseFloat(v)||0;save();render();}}
-function cycleAtt(id,n){if(role!=='master'){alert('Solo el máster puede cambiar la asistencia');return;}var d=days.find(function(x){return x.id===id;});if(!d)return;var c=d.att[n]||'presente';d.att[n]=c==='presente'?'tarde':c==='tarde'?'permiso':'presente';save();render();}
-function save(){try{localStorage.setItem('propinas_data',JSON.stringify({staff:staff,days:days}));}catch(e){}}
-function saveData(){if(role!=='master')return;save();alert('✓ Guardado');}
-function clearAll(){if(role!=='master')return;if(!confirm('¿Vaciar toda la quincena?'))return;days=[];save();render();}
-function resetAll(){if(role!=='master')return;if(!confirm('¿Resetear TODO? Se perderán todos los datos.'))return;staff=[];days=[];save();render();}
+function addStaff(){if(role!=='master'){alert('Solo el máster puede agregar personal');return;}var n=document.getElementById('newStaff').value.trim();if(!n)return;if(staff.indexOf(n)!==-1){alert('Ya está registrado');return;}staff.push(n);days.forEach(function(d){d.att[n]='presente';});document.getElementById('newStaff').value='';saveToCloud();render();}
+function rmStaff(n){if(role!=='master'){alert('Solo el máster puede eliminar personal');return;}if(!confirm('¿Eliminar a '+n+'?'))return;staff=staff.filter(function(s){return s!==n;});days.forEach(function(d){delete d.att[n];});saveToCloud();render();}
+function addDay(){if(role!=='master'){alert('Solo el máster puede agregar días');return;}var dt=document.getElementById('dDate').value;var am=parseFloat(document.getElementById('dAmount').value);if(!dt){alert('Selecciona una fecha');return;}if(!am||am<0){alert('Ingresa un monto válido');return;}var dow=new Date(dt+'T00:00:00').getDay();if(dow===1){alert('Solo se permiten días de martes a domingo (no lunes)');return;}var exists=false;days.forEach(function(d){if(d.date===dt)exists=true;});if(exists){alert('Ya existe un día con esa fecha');return;}var att={};staff.forEach(function(s){att[s]='presente';});days.push({id:Date.now(),date:dt,name:DIAS[dow],amount:am,att:att});days.sort(function(a,b){return a.date.localeCompare(b.date);});closeDayModal();saveToCloud();render();}
+function delDay(id){if(role!=='master'){alert('Solo el máster puede eliminar días');return;}if(!confirm('¿Eliminar este día?'))return;days=days.filter(function(d){return d.id!==id;});saveToCloud();render();}
+function updTip(id,v){if(role!=='master'){alert('Solo el máster puede editar montos');return;}var d=days.find(function(x){return x.id===id;});if(d){d.amount=parseFloat(v)||0;saveToCloud();render();}}
+function cycleAtt(id,n){if(role!=='master'){alert('Solo el máster puede cambiar la asistencia');return;}var d=days.find(function(x){return x.id===id;});if(!d)return;var c=d.att[n]||'presente';d.att[n]=c==='presente'?'tarde':c==='tarde'?'permiso':'presente';saveToCloud();render();}
+function saveData(){if(role!=='master')return;saveToCloud();}
+function clearAll(){if(role!=='master')return;if(!confirm('¿Vaciar toda la quincena?'))return;days=[];saveToCloud();render();}
+function resetAll(){if(role!=='master')return;if(!confirm('¿Resetear TODO? Se perderán todos los datos.'))return;staff=[];days=[];saveToCloud();render();}
 
 function calcDay(d){var n=staff.length;if(n===0)return{pp:0,pozo:d.amount,p:0};var pp=d.amount/n;var p=0;staff.forEach(function(s){if(d.att[s]==='presente')p++;});return{pp:pp,pozo:d.amount-pp*p,p:p};}
 function calcPerson(nm){var t=0,w=0,no=[];days.forEach(function(d){if(d.att[nm]==='presente'){t+=calcDay(d).pp;w++;}else{no.push(d.name.substring(0,3)+' '+fmtDate(d.date));}});return{t:t,w:w,no:no};}
