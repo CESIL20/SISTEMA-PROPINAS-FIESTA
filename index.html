@@ -19,7 +19,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;transition:background .3s,color .3s,border-color .3s}
 body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* LOADER */
 #loader{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(30,50,90,0.5) 0%,transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(201,169,97,0.06) 0%,transparent 50%),linear-gradient(180deg,#0a1628 0%,#06101f 50%,#040a14 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .8s ease;overflow:hidden}
 #loader.hide{opacity:0;pointer-events:none}
 .loader-logo-wrap{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
@@ -35,12 +34,12 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .l-bar{width:100%;height:3px;background:var(--border);border-radius:3px;overflow:hidden}
 .l-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold-l));width:0%;transition:width .15s;box-shadow:0 0 10px var(--gold)}
 .l-pct{color:var(--gold);font-size:.95rem;margin-top:.7rem;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:1px}
+
 .sync-badge{position:fixed;top:10px;right:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.4rem .8rem;font-size:.7rem;color:var(--text2);display:none;align-items:center;gap:.4rem;z-index:500}
 .sync-badge.show{display:flex}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse2 2s infinite}
 @keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* LOGIN */
 #login{position:fixed;inset:0;background:rgba(10,14,26,0.97);backdrop-filter:blur(30px);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
 #login.show{display:flex;animation:fadeIn .6s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -66,7 +65,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .back-btn:hover{color:var(--gold)}
 .err{color:var(--red);font-size:.8rem;margin-bottom:.8rem;display:none}
 
-/* APP */
 #app{display:none;max-width:1100px;margin:0 auto;padding:1.5rem 1.2rem}
 #app.show{display:block;animation:fadeIn .5s}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:1rem}
@@ -250,7 +248,7 @@ body.read-only .master-only{display:none !important}
 
   <div class="section master-only">
     <div class="sec-h"><div class="sec-h-l"><div class="sec-t">Datos</div></div></div>
-    <div class="acts"><button class="sv" onclick="saveData()"><i class="fas fa-save"></i> Guardar en la nube</button><button class="dg" onclick="clearAll()">Vaciar quincena</button></div>
+    <div class="acts"><button class="sv" onclick="saveData()"><i class="fas fa-save"></i> Guardar</button><button class="dg" onclick="clearAll()">Vaciar quincena</button></div>
     <button class="dg full" onclick="resetAll()">Resetear todo</button>
   </div>
 </div>
@@ -271,15 +269,18 @@ body.read-only .master-only{display:none !important}
       <h4 style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:.3rem">Propinas Pro</h4>
       <p style="font-size:.75rem;color:var(--text2);line-height:1.5;margin-bottom:.5rem">Sistema de gestión y reparto de propinas para quincenas.</p>
       <p style="font-size:.7rem;color:var(--text2)">Desarrollado con ❤️ para una administración eficiente.</p>
-      <div style="display:inline-block;background:var(--gold-s);color:var(--gold);padding:.2rem .6rem;border-radius:20px;font-size:.65rem;font-weight:600;margin-top:.5rem">Versión 2.0.0 · Cloud</div>
+      <div style="display:inline-block;background:var(--gold-s);color:var(--gold);padding:.2rem .6rem;border-radius:20px;font-size:.65rem;font-weight:600;margin-top:.5rem">Versión 2.0.1</div>
     </div>
   </div>
 </div>
 
 <script>
-// ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS DE JSONBIN.IO
-const BIN_ID = '6ae60338ffd5d160539b7100';
-const API_KEY='$2a$10$Xii1aCLZX.deaWbuQoaT5etZVFP8brUPtjmWe1CZimzAKrMyRWDg2';
+// ⚠️ CONFIGURACIÓN JSONBIN.IO (Opcional)
+// Si dejas estos valores vacíos, la app usará solo localStorage (funciona igual)
+// Para sincronizar entre dispositivos, completa estos datos:
+const BIN_ID = '6ae60338ffd5d160539b7100';  // Ejemplo: '67a1b2c3d4e5f6g7h8i9j0'
+const API_KEY = '$2a$10$Xii1aCLZX.deaWbuQoaT5etZVFP8brUPtjmWe1CZimzAKrMyRWDg2'; // Ejemplo: '$2a$10$XXXXXXXXXXXXXXXX...'
+const USE_CLOUD = BIN_ID !== '' && API_KEY !== '';
 const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
 var staff=[],days=[],role=null;
@@ -287,43 +288,55 @@ var PIN="2910";
 var DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 var isSaving=false;
 
-// Cargar datos desde JSONBin
-async function loadFromCloud(){
-  showSync('Conectando...',true);
-  try{
-    const res=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
-    if(!res.ok)throw new Error('Error al cargar');
-    const data=await res.json();
-    const record=data.record||{};
-    staff=record.staff||[];
-    days=record.days||[];
-    showSync('Sincronizado ✓',true);
-  }catch(e){
-    console.error('Error al cargar:',e);
-    showSync('Error de conexión',false);
-    // Fallback: cargar de localStorage
-    try{var s=localStorage.getItem('propinas_data');if(s){var d=JSON.parse(s);staff=d.staff||[];days=d.days||[];}}catch(e2){}
+// Cargar datos (nube si está configurada, sino localStorage)
+async function loadData(){
+  if(USE_CLOUD){
+    showSync('Conectando a la nube...',true);
+    try{
+      const res=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+      if(!res.ok)throw new Error('Error HTTP');
+      const data=await res.json();
+      const record=data.record||{};
+      staff=record.staff||[];
+      days=record.days||[];
+      showSync('Sincronizado ✓',true);
+      return;
+    }catch(e){
+      console.warn('No se pudo cargar de la nube, usando localStorage:',e);
+      showSync('Modo local',false);
+    }
   }
+  // Fallback a localStorage
+  try{
+    var s=localStorage.getItem('propinas_data');
+    if(s){var d=JSON.parse(s);staff=d.staff||[];days=d.days||[];}
+  }catch(e){console.error(e);}
 }
 
-// Guardar datos en JSONBin
-async function saveToCloud(){
+// Guardar datos
+async function saveData(){
   if(isSaving)return;
   isSaving=true;
-  showSync('Guardando...',true);
-  try{
-    const res=await fetch(BIN_URL,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
-      body:JSON.stringify({staff:staff,days:days})
-    });
-    if(!res.ok)throw new Error('Error al guardar');
-    showSync('Guardado en la nube ✓',true);
-    // También guardar en localStorage como backup
-    try{localStorage.setItem('propinas_data',JSON.stringify({staff:staff,days:days}));}catch(e){}
-  }catch(e){
-    console.error('Error al guardar:',e);
-    showSync('Error al guardar',false);
+  
+  // Siempre guardar en localStorage
+  try{localStorage.setItem('propinas_data',JSON.stringify({staff:staff,days:days}));}catch(e){}
+  
+  if(USE_CLOUD){
+    showSync('Guardando en la nube...',true);
+    try{
+      const res=await fetch(BIN_URL,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
+        body:JSON.stringify({staff:staff,days:days})
+      });
+      if(!res.ok)throw new Error('Error HTTP');
+      showSync('Guardado en la nube ✓',true);
+    }catch(e){
+      console.warn('No se pudo guardar en la nube:',e);
+      showSync('Guardado localmente',false);
+    }
+  }else{
+    showSync('Guardado ✓',true);
   }
   isSaving=false;
 }
@@ -334,8 +347,8 @@ function showSync(text,ok){
   const dot=badge.querySelector('.sync-dot');
   badge.classList.add('show');
   txt.textContent=text;
-  dot.style.background=ok?'var(--green)':'var(--red)';
-  setTimeout(()=>{badge.classList.remove('show');},3000);
+  dot.style.background=ok?'var(--green)':'var(--warn)';
+  setTimeout(()=>{badge.classList.remove('show');},2500);
 }
 
 // LOADER
@@ -366,7 +379,7 @@ function showSync(text,ok){
 })();
 
 // Cargar datos al iniciar
-loadFromCloud();
+loadData();
 
 function showPin(){document.getElementById('roles').style.display='none';document.getElementById('pinArea').classList.add('show');document.getElementById('pin').focus();}
 function hidePin(){document.getElementById('roles').style.display='block';document.getElementById('pinArea').classList.remove('show');document.getElementById('pin').value='';document.getElementById('err').style.display='none';}
@@ -392,15 +405,14 @@ function closeSettings(){document.getElementById('settingsModal').classList.remo
 function openDayModal(){if(role!=='master'){alert('Solo el máster puede agregar días');return;}document.getElementById('dayModal').classList.add('show');document.getElementById('dDate').value='';document.getElementById('dAmount').value='';}
 function closeDayModal(){document.getElementById('dayModal').classList.remove('show');}
 
-function addStaff(){if(role!=='master'){alert('Solo el máster puede agregar personal');return;}var n=document.getElementById('newStaff').value.trim();if(!n)return;if(staff.indexOf(n)!==-1){alert('Ya está registrado');return;}staff.push(n);days.forEach(function(d){d.att[n]='presente';});document.getElementById('newStaff').value='';saveToCloud();render();}
-function rmStaff(n){if(role!=='master'){alert('Solo el máster puede eliminar personal');return;}if(!confirm('¿Eliminar a '+n+'?'))return;staff=staff.filter(function(s){return s!==n;});days.forEach(function(d){delete d.att[n];});saveToCloud();render();}
-function addDay(){if(role!=='master'){alert('Solo el máster puede agregar días');return;}var dt=document.getElementById('dDate').value;var am=parseFloat(document.getElementById('dAmount').value);if(!dt){alert('Selecciona una fecha');return;}if(!am||am<0){alert('Ingresa un monto válido');return;}var dow=new Date(dt+'T00:00:00').getDay();if(dow===1){alert('Solo se permiten días de martes a domingo (no lunes)');return;}var exists=false;days.forEach(function(d){if(d.date===dt)exists=true;});if(exists){alert('Ya existe un día con esa fecha');return;}var att={};staff.forEach(function(s){att[s]='presente';});days.push({id:Date.now(),date:dt,name:DIAS[dow],amount:am,att:att});days.sort(function(a,b){return a.date.localeCompare(b.date);});closeDayModal();saveToCloud();render();}
-function delDay(id){if(role!=='master'){alert('Solo el máster puede eliminar días');return;}if(!confirm('¿Eliminar este día?'))return;days=days.filter(function(d){return d.id!==id;});saveToCloud();render();}
-function updTip(id,v){if(role!=='master'){alert('Solo el máster puede editar montos');return;}var d=days.find(function(x){return x.id===id;});if(d){d.amount=parseFloat(v)||0;saveToCloud();render();}}
-function cycleAtt(id,n){if(role!=='master'){alert('Solo el máster puede cambiar la asistencia');return;}var d=days.find(function(x){return x.id===id;});if(!d)return;var c=d.att[n]||'presente';d.att[n]=c==='presente'?'tarde':c==='tarde'?'permiso':'presente';saveToCloud();render();}
-function saveData(){if(role!=='master')return;saveToCloud();}
-function clearAll(){if(role!=='master')return;if(!confirm('¿Vaciar toda la quincena?'))return;days=[];saveToCloud();render();}
-function resetAll(){if(role!=='master')return;if(!confirm('¿Resetear TODO? Se perderán todos los datos.'))return;staff=[];days=[];saveToCloud();render();}
+function addStaff(){if(role!=='master'){alert('Solo el máster puede agregar personal');return;}var n=document.getElementById('newStaff').value.trim();if(!n)return;if(staff.indexOf(n)!==-1){alert('Ya está registrado');return;}staff.push(n);days.forEach(function(d){d.att[n]='presente';});document.getElementById('newStaff').value='';saveData();render();}
+function rmStaff(n){if(role!=='master'){alert('Solo el máster puede eliminar personal');return;}if(!confirm('¿Eliminar a '+n+'?'))return;staff=staff.filter(function(s){return s!==n;});days.forEach(function(d){delete d.att[n];});saveData();render();}
+function addDay(){if(role!=='master'){alert('Solo el máster puede agregar días');return;}var dt=document.getElementById('dDate').value;var am=parseFloat(document.getElementById('dAmount').value);if(!dt){alert('Selecciona una fecha');return;}if(!am||am<0){alert('Ingresa un monto válido');return;}var dow=new Date(dt+'T00:00:00').getDay();if(dow===1){alert('Solo se permiten días de martes a domingo (no lunes)');return;}var exists=false;days.forEach(function(d){if(d.date===dt)exists=true;});if(exists){alert('Ya existe un día con esa fecha');return;}var att={};staff.forEach(function(s){att[s]='presente';});days.push({id:Date.now(),date:dt,name:DIAS[dow],amount:am,att:att});days.sort(function(a,b){return a.date.localeCompare(b.date);});closeDayModal();saveData();render();}
+function delDay(id){if(role!=='master'){alert('Solo el máster puede eliminar días');return;}if(!confirm('¿Eliminar este día?'))return;days=days.filter(function(d){return d.id!==id;});saveData();render();}
+function updTip(id,v){if(role!=='master'){alert('Solo el máster puede editar montos');return;}var d=days.find(function(x){return x.id===id;});if(d){d.amount=parseFloat(v)||0;saveData();render();}}
+function cycleAtt(id,n){if(role!=='master'){alert('Solo el máster puede cambiar la asistencia');return;}var d=days.find(function(x){return x.id===id;});if(!d)return;var c=d.att[n]||'presente';d.att[n]=c==='presente'?'tarde':c==='tarde'?'permiso':'presente';saveData();render();}
+function clearAll(){if(role!=='master')return;if(!confirm('¿Vaciar toda la quincena?'))return;days=[];saveData();render();}
+function resetAll(){if(role!=='master')return;if(!confirm('¿Resetear TODO? Se perderán todos los datos.'))return;staff=[];days=[];saveData();render();}
 
 function calcDay(d){var n=staff.length;if(n===0)return{pp:0,pozo:d.amount,p:0};var pp=d.amount/n;var p=0;staff.forEach(function(s){if(d.att[s]==='presente')p++;});return{pp:pp,pozo:d.amount-pp*p,p:p};}
 function calcPerson(nm){var t=0,w=0,no=[];days.forEach(function(d){if(d.att[nm]==='presente'){t+=calcDay(d).pp;w++;}else{no.push(d.name.substring(0,3)+' '+fmtDate(d.date));}});return{t:t,w:w,no:no};}
